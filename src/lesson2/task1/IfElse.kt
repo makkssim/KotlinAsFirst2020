@@ -3,6 +3,8 @@
 package lesson2.task1
 
 import lesson1.task1.discriminant
+import lesson1.task1.sqr
+import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.sqrt
 
@@ -70,8 +72,8 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  */
 fun ageDescription(age: Int): String {
     if ((age % 10 == 1) && (age % 100 != 11)) return "$age год" else
-if ((age % 10 in 2..4) && (age % 100 !in 12..14)) return "$age года" else
-if ((age % 10 in 5..9) || (age % 100 in 11..19) || (age % 10 == 0)) return "$age лет" else return "Не работает"
+        if ((age % 10 in 2..4) && (age % 100 !in 12..14)) return "$age года" else
+            if ((age % 10 in 5..9) || (age % 100 in 11..19) || (age % 10 == 0)) return "$age лет" else return "Не работает"
 }
 
 
@@ -108,9 +110,9 @@ fun whichRookThreatens(
     rookX1: Int, rookY1: Int,
     rookX2: Int, rookY2: Int
 ): Int {
-if (((kingX == rookX2) || (kingY == rookY2)) && ((kingX == rookX1) || (kingY == rookY1))) return 3 else
-if ((kingX == rookX2) || (kingY == rookY2)) return 2 else
-if ((kingX == rookX1) || (kingY == rookY1)) return 1 else return 0
+    if (((kingX == rookX2) || (kingY == rookY2)) && ((kingX == rookX1) || (kingY == rookY1))) return 3 else
+        if ((kingX == rookX2) || (kingY == rookY2)) return 2 else
+            if ((kingX == rookX1) || (kingY == rookY1)) return 1 else return 0
 }
 
 /**
@@ -127,7 +129,11 @@ fun rookOrBishopThreatens(
     kingX: Int, kingY: Int,
     rookX: Int, rookY: Int,
     bishopX: Int, bishopY: Int
-): Int = TODO()
+): Int {
+    if (((kingX == rookX) || (kingY == rookY)) && (abs(kingX - bishopX) == abs(kingY - bishopY))) return 3 else
+        if ((kingX == rookX) || (kingY == rookY)) return 1 else
+            if (abs(kingX - bishopX) == abs(kingY - bishopY)) return 2 else return 0
+}
 
 /**
  * Простая (2 балла)
@@ -137,7 +143,31 @@ fun rookOrBishopThreatens(
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
+fun triangleKind(a: Double, b: Double, c: Double): Int {
+    if ((a >= b + c) || (b >= a + c) || (c >= b + a)) return -1 else {
+        val s1: Double
+        val s2: Double
+        val maxtemp: Double
+        val max: Double
+        if (a > b) {
+            maxtemp = a
+            s1 = b
+        } else {
+            maxtemp = b
+            s1 = a
+        }
+        if (maxtemp > c) {
+            max = maxtemp
+            s2 = c
+        } else {
+            max = c
+            s2 = maxtemp
+        }
+        if (sqr(max) > sqr(s1) + sqr(s2)) return 2 else
+            if (sqr(max) == sqr(s1) + sqr(s2)) return 1 else return 0
+    }
+}
+
 
 /**
  * Средняя (3 балла)
@@ -147,4 +177,11 @@ fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = TODO()
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
+    if ((d <= a) || (c >= b) || (a == b) || (b == c)) return -1 else
+        if ((c <= a) && (d in (a + 1)..b)) return d - a else
+            if ((a in c..(d - 1)) && (b in (c + 1)..d)) return b - a else
+                if ((c in a..(b - 1)) && (d in (a + 1)..b)) return d - c else
+                    if ((c in a..(b - 1)) && (d >= b)) return b - c else return -1
+}
+
