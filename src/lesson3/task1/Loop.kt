@@ -2,6 +2,8 @@
 
 package lesson3.task1
 
+import lesson1.task1.sqr
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 // Урок 3: циклы
@@ -72,7 +74,18 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun digitNumber(n: Int): Int = TODO()
+fun digitNumber(n: Int): Int {
+    var a: Int = n
+    var k: Int = 0
+    if (a == 0) return 1 else {
+        while (a > 0) {
+            a /= 10
+            k += 1
+        }
+    }
+    return k
+}
+
 
 /**
  * Простая (2 балла)
@@ -80,21 +93,53 @@ fun digitNumber(n: Int): Int = TODO()
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int = TODO()
+fun fib(n: Int): Int {
+    var f1: Int = 1
+    var f2: Int = 1
+    var f: Int = 1
+    for (i in 1..n - 2) {
+        f = f1 + f2
+        f1 = f2
+        f2 = f
+    }
+    return f
+}
 
 /**
  * Простая (2 балла)
  *
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
-fun minDivisor(n: Int): Int = TODO()
+fun minDivisor(n: Int): Int {
+    var j: Int = 1
+    for (i in 2..n) {
+        if (n % i == 0) {
+            j = i
+            break
+        }
+    }
+    return j
+
+}
+
 
 /**
  * Простая (2 балла)
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int = TODO()
+fun maxDivisor(n: Int): Int {
+    var j: Int = n / 2 + 1
+    while (j <= n) {
+        j--
+        if (n % j == 0) {
+            j = j
+            break
+        }
+    }
+    return j
+
+}
 
 /**
  * Простая (2 балла)
@@ -112,7 +157,16 @@ fun maxDivisor(n: Int): Int = TODO()
  * Написать функцию, которая находит, сколько шагов требуется для
  * этого для какого-либо начального X > 0.
  */
-fun collatzSteps(x: Int): Int = TODO()
+fun collatzSteps(x: Int): Int {
+    var n: Int = x
+    var k: Int = 0
+    while (n != 1) {
+        if (n % 2 == 0) n /= 2 else n = n * 3 + 1
+        k++
+    }
+    return k
+}
+
 
 /**
  * Средняя (3 балла)
@@ -120,7 +174,22 @@ fun collatzSteps(x: Int): Int = TODO()
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int = TODO()
+fun lcm(m: Int, n: Int): Int {
+    var s: Int = 0
+    var max: Int = 0
+    var min: Int = 0
+    if (m > n) {
+        max = m
+        min = n
+    } else {
+        max = n
+        min = m
+    }
+    while ((s % min != 0) || (s == 0)) {
+        s += max
+    }
+    return s
+}
 
 /**
  * Средняя (3 балла)
@@ -129,7 +198,24 @@ fun lcm(m: Int, n: Int): Int = TODO()
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean = TODO()
+fun isCoPrime(m: Int, n: Int): Boolean {
+
+    var max: Int = 0
+    var min: Int = 0
+    if (m > n) {
+        max = m
+        min = n
+    } else {
+        max = n
+        min = m
+    }
+    var k: Int = min
+    while ((m % k != 0) || (n % k != 0)) {
+        k--
+    }
+    return k <= 1
+}
+
 
 /**
  * Средняя (3 балла)
@@ -201,7 +287,32 @@ fun cos(x: Double, eps: Double): Double = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun squareSequenceDigit(n: Int): Int {
+    var i: Int = 0
+    var s: Int = 0
+    var k: Int = 0
+
+    fun numberOfDigits(f: Int): Int {
+        var a: Int = f
+        var k: Int = 0
+        if (a == 0) return 1 else {
+            while (a > 0) {
+                a /= 10
+                k += 1
+            }
+        }
+        return k
+    }
+    while (i > -10) {
+        i++
+        s += numberOfDigits(sqr(i))
+        if (s >= n) {
+            k = s - n
+            break
+        }
+    }
+    return ((sqr(i) % (10.0).pow(k + 1)) / (10.0).pow(k)).toInt()
+}
 
 /**
  * Сложная (5 баллов)
@@ -212,4 +323,44 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int {
+    var i: Int = 0
+    var s: Int = 0
+    var k: Int = 0
+    fun fibon(m: Int): Int {
+        var f1: Int = 1
+        var f2: Int = 1
+        var f: Int = 1
+
+        for (l in 1..m - 2) {
+            f = f1 + f2
+            f1 = f2
+            f2 = f
+        }
+        return f
+    }
+
+    fun numberOfDigits(h: Int): Int {
+        var a: Int = h
+        var k: Int = 0
+        if (a == 0) return 1 else {
+            while (a > 0) {
+                a /= 10
+                k += 1
+            }
+        }
+        return k
+    }
+    while (i > -10) {
+        i++
+        s += numberOfDigits(fibon(i))
+        if (s >= n) {
+            k = s - n
+            break
+        }
+    }
+
+    return ((fibon(i) % (10.0).pow(k + 1)) / (10.0).pow(k)).toInt()
+
+
+}
