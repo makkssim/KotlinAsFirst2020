@@ -76,7 +76,7 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  */
 fun digitNumber(n: Int): Int {
     var a: Int = n
-    var k: Int = 0
+    var k= 0
     when{
         a == 0 -> return 1
         a < 0 -> return 0
@@ -98,9 +98,9 @@ fun digitNumber(n: Int): Int {
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
 fun fib(n: Int): Int {
-    var f1: Int = 1
-    var f2: Int = 1
-    var f: Int = 1
+    var f1 = 1
+    var f2 = 1
+    var f = 1
     for (i in 1..n - 2) {
         f = f1 + f2
         f1 = f2
@@ -115,7 +115,7 @@ fun fib(n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    var j: Int = 1
+    var j = 1
     for (i in 2..n) {
         if (n % i == 0) {
             j = i
@@ -137,7 +137,6 @@ fun maxDivisor(n: Int): Int {
     while (j <= n) {
         j--
         if (n % j == 0) {
-            j = j
             break
         }
     }
@@ -163,7 +162,7 @@ fun maxDivisor(n: Int): Int {
  */
 fun collatzSteps(x: Int): Int {
     var n: Int = x
-    var k: Int = 0
+    var k = 0
     while (n != 1) {
         if (n % 2 == 0) n /= 2 else n = n * 3 + 1
         k++
@@ -179,9 +178,9 @@ fun collatzSteps(x: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 fun lcm(m: Int, n: Int): Int {
-    var s: Int = 0
-    var max: Int = 0
-    var min: Int = 0
+    var s = 0
+    val max: Int
+    val min: Int
     if (m > n) {
         max = m
         min = n
@@ -203,21 +202,16 @@ fun lcm(m: Int, n: Int): Int {
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-
-    var max: Int = 0
-    var min: Int = 0
+    var min: Int
     if (m > n) {
-        max = m
         min = n
     } else {
-        max = n
         min = m
     }
-    var k: Int = min
-    while ((m % k != 0) || (n % k != 0)) {
-        k--
+    while ((m % min != 0) || (n % min != 0)) {
+        min--
     }
-    return k <= 1
+    return min <= 1
 }
 
 
@@ -228,7 +222,13 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * то есть, существует ли такое целое k, что m <= k*k <= n.
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
-fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
+fun squareBetweenExists(m: Int, n: Int): Boolean {
+    var k = false
+    for (i in 1..sqrt(n.toDouble()).toInt()){
+        if(sqr(i) in m..n ) k = true
+    }
+    return  k
+}
 
 /**
  * Средняя (3 балла)
@@ -292,13 +292,13 @@ fun cos(x: Double, eps: Double): Double = TODO()
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun squareSequenceDigit(n: Int): Int {
-    var i: Int = 0
-    var s: Int = 0
-    var k: Int = 0
+    var i = 0
+    var s = 0
+    var k = 0
 
     fun numberOfDigits(f: Int): Int {
         var a: Int = f
-        var k: Int = 0
+        var k = 0
         if (a == 0) return 1 else {
             while (a > 0) {
                 a /= 10
@@ -328,13 +328,13 @@ fun squareSequenceDigit(n: Int): Int {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun fibSequenceDigit(n: Int): Int {
-    var i: Int = 0
-    var s: Int = 0
-    var k: Int = 0
+    var i = 0
+    var s = 0
+    var k = 0
     fun fibon(m: Int): Int {
-        var f1: Int = 1
-        var f2: Int = 1
-        var f: Int = 1
+        var f1 = 1
+        var f2 = 1
+        var f = 1
 
         for (l in 1..m - 2) {
             f = f1 + f2
@@ -346,7 +346,7 @@ fun fibSequenceDigit(n: Int): Int {
 
     fun numberOfDigits(h: Int): Int {
         var a: Int = h
-        var k: Int = 0
+        var k= 0
         if (a == 0) return 1 else {
             while (a > 0) {
                 a /= 10
