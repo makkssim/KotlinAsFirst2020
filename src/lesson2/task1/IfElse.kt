@@ -71,9 +71,13 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
 fun ageDescription(age: Int): String {
-    if ((age % 10 == 1) && (age % 100 != 11)) return "$age год" else
-        if ((age % 10 in 2..4) && (age % 100 !in 12..14)) return "$age года" else
-            if ((age % 10 in 5..9) || (age % 100 in 11..19) || (age % 10 == 0)) return "$age лет" else return "Не работает"
+    when {
+        (age % 10 == 1) && (age % 100 != 11) -> return "$age год"
+        (age % 10 in 2..4) && (age % 100 !in 12..14) -> return "$age года"
+        (age % 10 in 5..9) || (age % 100 in 11..19) || (age % 10 == 0) -> return "$age лет"
+
+        else -> return "Не работает"
+    }
 }
 
 
@@ -89,10 +93,13 @@ fun timeForHalfWay(
     t2: Double, v2: Double,
     t3: Double, v3: Double
 ): Double {
-    val s: Double = (t1 * v1 + t2 * v2 + t3 * v3) / 2
-    if (s <= t1 * v1) return s / v1 else
-        if ((s > (t1 * v1)) && s <= (t1 * v1 + t2 * v2)) return t1 + (s - t1 * v1) / v2 else
-            if ((s > (t1 * v1 + t2 * v2)) && s <= (t1 * v1 + t2 * v2 + t3 * v3)) return t1 + t2 + (s - t1 * v1 - t2 * v2) / v3 else return 0.0
+    val s = (t1 * v1 + t2 * v2 + t3 * v3) / 2
+    when {
+        (s <= t1 * v1) -> return s / v1
+        (s > (t1 * v1)) && s <= (t1 * v1 + t2 * v2) -> return t1 + (s - t1 * v1) / v2
+        (s > (t1 * v1 + t2 * v2)) && s <= (t1 * v1 + t2 * v2 + t3 * v3) -> return t1 + t2 + (s - t1 * v1 - t2 * v2) / v3
+        else -> return 0.0
+    }
 }
 
 
@@ -110,9 +117,11 @@ fun whichRookThreatens(
     rookX1: Int, rookY1: Int,
     rookX2: Int, rookY2: Int
 ): Int {
-    if (((kingX == rookX2) || (kingY == rookY2)) && ((kingX == rookX1) || (kingY == rookY1))) return 3 else
-        if ((kingX == rookX2) || (kingY == rookY2)) return 2 else
-            if ((kingX == rookX1) || (kingY == rookY1)) return 1 else return 0
+    // Я смог придумать, как оптимизировать вычисления только при использовании if'ов
+    var k: Int = 0
+    if ((kingX == rookX2) || (kingY == rookY2)) k += 2
+    if ((kingX == rookX1) || (kingY == rookY1)) k++
+    return k
 }
 
 /**
@@ -177,11 +186,11 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
-    if ((d <= a) || (c >= b) || (a == b) || (b == c)) return -1 else
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = TODO()
+/*if ((d <= a) || (c >= b) || (a == b) || (b == c)) return -1 else
         if ((c <= a) && (d in (a + 1)..b)) return d - a else
-            if ((a in c..(d - 1)) && (b in (c + 1)..d)) return b - a else
-                if ((c in a..(b - 1)) && (d in (a + 1)..b)) return d - c else
-                    if ((c in a..(b - 1)) && (d >= b)) return b - c else return -1
-}
+            if ((a in c until d) && (b in (c + 1)..d)) return b - a else
+                if ((c in a until b) && (d in (a + 1)..b)) return d - c else
+                    if ((c in a until b) && (d >= b)) return b - c else return -1*/
+
 
