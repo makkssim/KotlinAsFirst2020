@@ -76,8 +76,8 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  */
 fun digitNumber(n: Int): Int {
     var a: Int = n
-    var k= 0
-    when{
+    var k = 0
+    when {
         a == 0 -> return 1
         a < 0 -> return 0
         else -> {
@@ -224,10 +224,10 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
     var k = false
-    for (i in 1..sqrt(n.toDouble()).toInt()){
-        if(sqr(i) in m..n ) k = true
+    for (i in 0..sqrt(n.toDouble()).toInt()) {
+        if (sqr(i) in m..n) k = true
     }
-    return  k
+    return k
 }
 
 /**
@@ -346,7 +346,7 @@ fun fibSequenceDigit(n: Int): Int {
 
     fun numberOfDigits(h: Int): Int {
         var a: Int = h
-        var k= 0
+        var k = 0
         if (a == 0) return 1 else {
             while (a > 0) {
                 a /= 10

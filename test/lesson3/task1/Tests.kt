@@ -65,7 +65,7 @@ class Tests {
     @Test
     @Tag("2")
     fun digitNumber() {
-        assertEquals(1, digitNumber(0))
+        assertEquals(1, digitNumber(1))
         assertEquals(1, digitNumber(7))
         assertEquals(2, digitNumber(10))
         assertEquals(2, digitNumber(99))
@@ -160,7 +160,7 @@ class Tests {
     @Test
     @Tag("3")
     fun squareBetweenExists() {
-        assertTrue(squareBetweenExists(1, 1))
+        assertTrue(squareBetweenExists(0, 0))
         assertTrue(squareBetweenExists(21, 28))
         assertTrue(squareBetweenExists(36, 48))
         assertTrue(squareBetweenExists(50, 64))
