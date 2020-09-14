@@ -3,9 +3,7 @@
 package lesson3.task1
 
 import lesson1.task1.sqr
-import kotlin.math.abs
-import kotlin.math.pow
-import kotlin.math.sqrt
+import kotlin.math.*
 
 // Урок 3: циклы
 // Максимальное количество баллов = 9
@@ -176,15 +174,8 @@ fun collatzSteps(x: Int): Int {
  */
 fun lcm(m: Int, n: Int): Int {
     var s = 0
-    val max: Int
-    val min: Int
-    if (m > n) {
-        max = m
-        min = n
-    } else {
-        max = n
-        min = m
-    }
+    val max = max(m, n)
+    val min = min(m, n)
     while ((s % min != 0) || (s == 0)) {
         s += max
     }
@@ -199,17 +190,12 @@ fun lcm(m: Int, n: Int): Int {
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    var min: Int
-    if (m > n) {
-        min = n
-    } else {
-        min = m
-    }
+    var min = min(m, n)
     while ((m % min != 0) || (n % min != 0)) {
         min--
     }
     return min <= 1
-}
+}// не знаю, чем она похожа на предыдущую, кроме необходимости искать минимум
 
 
 /**
@@ -288,31 +274,27 @@ fun cos(x: Double, eps: Double): Double = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
+fun powInt(a: Int, h: Int): Int {
+    var j = 1
+    for (p in 0 until h) {
+        j *= a
+    }
+    return j
+}
 fun squareSequenceDigit(n: Int): Int {
     var i = 0
     var s = 0
     var k = 0
 
-    fun numberOfDigits(f: Int): Int {
-        var a: Int = f
-        var k = 0
-        if (a == 0) return 1 else {
-            while (a > 0) {
-                a /= 10
-                k += 1
-            }
-        }
-        return k
-    }
     while (i > -10) {
         i++
-        s += numberOfDigits(sqr(i))
+        s += digitNumber(sqr(i))
         if (s >= n) {
             k = s - n
             break
         }
     }
-    return ((sqr(i) % (10.0).pow(k + 1)) / (10.0).pow(k)).toInt()
+    return (sqr(i) % powInt(10, k + 1)) / powInt(10, k)
 }
 
 /**
@@ -328,40 +310,15 @@ fun fibSequenceDigit(n: Int): Int {
     var i = 0
     var s = 0
     var k = 0
-    fun fibon(m: Int): Int {
-        var f1 = 1
-        var f2 = 1
-        var f = 1
-
-        for (l in 1..m - 2) {
-            f = f1 + f2
-            f1 = f2
-            f2 = f
-        }
-        return f
-    }
-
-    fun numberOfDigits(h: Int): Int {
-        var a: Int = h
-        var k = 0
-        if (a == 0) return 1 else {
-            while (a > 0) {
-                a /= 10
-                k += 1
-            }
-        }
-        return k
-    }
     while (i > -10) {
         i++
-        s += numberOfDigits(fibon(i))
+        s += digitNumber(fib(i))
         if (s >= n) {
             k = s - n
             break
         }
     }
-
-    return ((fibon(i) % (10.0).pow(k + 1)) / (10.0).pow(k)).toInt()
+    return (fib(i) % powInt(10, k + 1)) / powInt(10, k)
 
 
 }

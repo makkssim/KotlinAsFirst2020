@@ -6,6 +6,7 @@ import lesson1.task1.discriminant
 import lesson1.task1.sqr
 import kotlin.math.abs
 import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.sqrt
 
 // Урок 2: ветвления (здесь), логический тип (см. 2.2).
@@ -118,7 +119,7 @@ fun whichRookThreatens(
     rookX2: Int, rookY2: Int
 ): Int {
     // Я смог придумать, как оптимизировать вычисления только при использовании if'ов
-    var k: Int = 0
+    var k = 0
     if ((kingX == rookX2) || (kingY == rookY2)) k += 2
     if ((kingX == rookX1) || (kingY == rookY1)) k++
     return k
@@ -139,9 +140,10 @@ fun rookOrBishopThreatens(
     rookX: Int, rookY: Int,
     bishopX: Int, bishopY: Int
 ): Int {
-    if (((kingX == rookX) || (kingY == rookY)) && (abs(kingX - bishopX) == abs(kingY - bishopY))) return 3 else
-        if ((kingX == rookX) || (kingY == rookY)) return 1 else
-            if (abs(kingX - bishopX) == abs(kingY - bishopY)) return 2 else return 0
+    var k = 0
+    if ((kingX == rookX) || (kingY == rookY)) k++
+    if (abs(kingX - bishopX) == abs(kingY - bishopY)) k += 2
+    return k
 }
 
 /**
@@ -154,26 +156,15 @@ fun rookOrBishopThreatens(
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
     if ((a >= b + c) || (b >= a + c) || (c >= b + a)) return -1 else {
-        val s1: Double
-        val s2: Double
-        val maxtemp: Double
-        val max: Double
-        if (a > b) {
-            maxtemp = a
-            s1 = b
-        } else {
-            maxtemp = b
-            s1 = a
+        val maxtemp: Double = max(a, b)
+        val s1 = min(a, b)
+        val max = max(maxtemp, c)
+        val s2 = min(maxtemp, c)
+        return when {
+            sqr(max) > sqr(s1) + sqr(s2) -> 2
+            sqr(max) == sqr(s1) + sqr(s2) -> 1
+            else -> 0
         }
-        if (maxtemp > c) {
-            max = maxtemp
-            s2 = c
-        } else {
-            max = c
-            s2 = maxtemp
-        }
-        if (sqr(max) > sqr(s1) + sqr(s2)) return 2 else
-            if (sqr(max) == sqr(s1) + sqr(s2)) return 1 else return 0
     }
 }
 
