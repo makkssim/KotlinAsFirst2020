@@ -132,14 +132,7 @@ class Tests {
         assertEquals(128, collatzSteps(100000))
     }
 
-    @Test
-    @Tag("0")
-    fun nod() {
-        assertEquals(5, lcm(100, 45))
-        assertEquals(6, lcm(60, 18))
-        assertEquals(11, lcm(77, 33))
 
-    }
 
     @Test
     @Tag("3")
