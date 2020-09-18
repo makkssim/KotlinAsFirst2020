@@ -304,7 +304,8 @@ fun squareSequenceDigit(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int {
+fun fibSequenceDigit(n: Int): Int = TODO()
+/*{
     var i = 0
     var s = 0
     var k = 0
@@ -320,3 +321,4 @@ fun fibSequenceDigit(n: Int): Int {
 
 
 }
+*/
