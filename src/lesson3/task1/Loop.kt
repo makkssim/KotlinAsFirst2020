@@ -165,6 +165,15 @@ fun collatzSteps(x: Int): Int {
     return k
 }
 
+fun nod(x: Int, y: Int): Int {
+    var a = x
+    var b = y
+    while (a != b) {
+        if (a > b) a -= b else b -= a
+    }
+    println(a)
+    return a
+}
 
 /**
  * Средняя (3 балла)
@@ -172,15 +181,8 @@ fun collatzSteps(x: Int): Int {
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int {
-    var s = 0
-    val max = max(m, n)
-    val min = min(m, n)
-    while ((s % min != 0) || (s == 0)) {
-        s += max
-    }
-    return s
-}
+fun lcm(m: Int, n: Int): Int = m * n / nod(m, n)
+
 
 /**
  * Средняя (3 балла)
@@ -189,13 +191,8 @@ fun lcm(m: Int, n: Int): Int {
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean {
-    var min = min(m, n)
-    while ((m % min != 0) || (n % min != 0)) {
-        min--
-    }
-    return min <= 1
-}// не знаю, чем она похожа на предыдущую, кроме необходимости искать минимум
+fun isCoPrime(m: Int, n: Int): Boolean = nod(m, n) == 1
+
 
 
 /**
@@ -281,6 +278,7 @@ fun powInt(a: Int, h: Int): Int {
     }
     return j
 }
+
 fun squareSequenceDigit(n: Int): Int {
     var i = 0
     var s = 0
