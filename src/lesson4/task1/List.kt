@@ -3,6 +3,7 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
+import lesson1.task1.sqr
 import lesson3.task1.powInt
 import kotlin.math.sqrt
 
@@ -123,8 +124,8 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  */
 fun abs(v: List<Double>): Double {
     var k = 0.0
-    for (i in v.indices) {
-        k += v[i] * v[i]
+    for (i in v) {
+        k += sqr(i)
     }
     return sqrt(k)
 }
@@ -135,12 +136,8 @@ fun abs(v: List<Double>): Double {
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
 fun mean(list: List<Double>): Double {
-    if (list.isEmpty()) return 0.0 else {
-        var k = 0.0
-        for (i in list.indices) {
-            k += list[i]
-        }
-        return k / list.size
+    return if (list.isEmpty()) 0.0 else {
+        list.sum() / list.size
     }
 }
 
@@ -205,17 +202,10 @@ fun polynom(p: List<Int>, x: Int): Int {
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun accumulate(list: MutableList<Int>): MutableList<Int> {
-    return if (list.size == 0) list else {
-        var k = list[0]
-        var temp: Int
-        for (i in 1 until list.size) {
-            temp = list[i]
-            list[i] += k
-            k += temp
-        }
-        list
+    for (i in 1 until list.size) {
+        list[i] += list[i - 1]
     }
-
+    return list
 }
 
 /**
