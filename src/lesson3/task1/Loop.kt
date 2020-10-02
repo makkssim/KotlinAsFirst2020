@@ -194,7 +194,6 @@ fun lcm(m: Int, n: Int): Int = m * n / nod(m, n)
 fun isCoPrime(m: Int, n: Int): Boolean = nod(m, n) == 1
 
 
-
 /**
  * Средняя (3 балла)
  *
@@ -280,19 +279,20 @@ fun powInt(a: Int, h: Int): Int {
 }
 
 fun squareSequenceDigit(n: Int): Int {
-    var i = 0
-    var s = 0
-    var k = 0
+    var i: Long = 0
+    var s: Long = 0
+    var k: Long = 0
 
-    while (i > -10) {
+    while (true) {
         i++
-        s += digitNumber(sqr(i))
+        var temp: Long = i * i
+        s += temp.toString().length
         if (s >= n) {
             k = s - n
             break
         }
     }
-    return (sqr(i) % powInt(10, k + 1)) / powInt(10, k)
+    return ((i * i % powInt(10, k.toInt() + 1).toLong()) / powInt(10, k.toInt()).toLong()).toInt()
 }
 
 /**
