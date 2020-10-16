@@ -247,6 +247,7 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
     writer.close()
 }
 
+
 /**
  * Средняя (12 баллов)
  *
