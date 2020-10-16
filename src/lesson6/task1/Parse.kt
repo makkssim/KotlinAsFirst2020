@@ -195,7 +195,7 @@ fun bestLongJump(jumps: String): Int {
                 break
             }
         }
-        if (m && n) return -1
+        if (m && n || s == "") return -1
     }
     var k = -1;
     for (s in a) {
