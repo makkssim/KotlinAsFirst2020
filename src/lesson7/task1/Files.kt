@@ -239,7 +239,7 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
     for (line in File(inputName).readLines()) {
         var t = line
         for ((old, new) in dictionary) {
-            t = t.replace(old.toString(), new, true)
+            t = t.replace(old.toString(), new.toLowerCase(), true)
         }
         writer.write(t)
         writer.newLine()
