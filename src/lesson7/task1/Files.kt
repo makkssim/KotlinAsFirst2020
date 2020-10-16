@@ -236,10 +236,18 @@ fun top20Words(inputName: String): Map<String, Int> = TODO()
  */
 fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: String) {
     val writer = File(outputName).bufferedWriter()
+    val dict = mutableMapOf<Char, String>()
+    for ((a, b) in dictionary) {
+        dict += a.toLowerCase() to b.toLowerCase()
+    }
     for (line in File(inputName).readLines()) {
-        var t = line
-        for ((old, new) in dictionary) {
-            t = t.replace(old.toString().toLowerCase(), new.toLowerCase(), true)
+        var t = ""
+        for (i in line) {
+            if (i.toLowerCase() in dict) {
+                t += dict.getValue(i.toLowerCase())
+            } else {
+                t += i
+            }
         }
         if (line[0].isUpperCase() && t != "") t[0].toUpperCase()
         writer.write(t)
@@ -247,7 +255,13 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
     }
     writer.close()
 }
-
+/*var t = line
+        for ((old, new) in dictionary) {
+            t = t.replace(old.toString().toLowerCase(), new.toLowerCase(), true)
+        }
+        if (line[0].isUpperCase() && t != "") t[0].toUpperCase()
+        writer.write(t)
+        writer.newLine()*/
 
 /**
  * Средняя (12 баллов)
