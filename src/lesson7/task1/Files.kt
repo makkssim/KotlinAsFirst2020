@@ -237,9 +237,9 @@ fun top20Words(inputName: String): Map<String, Int> = TODO()
 fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: String) {
     val writer = File(outputName).bufferedWriter()
     for (line in File(inputName).readLines()) {
-        var t = line
+        var t = line.toLowerCase()
         for ((old, new) in dictionary) {
-            t = line.replace(old.toString(), new.toLowerCase(), true)
+            t = t.replace(old.toString().toLowerCase(), new.toLowerCase(), true)
         }
         if (line[0].isUpperCase() && t != "") t[0].toUpperCase()
         writer.write(t)

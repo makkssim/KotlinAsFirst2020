@@ -186,7 +186,7 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
     val res = mapA.toMutableMap()
     for ((name, num) in mapB) {
         if (name in res && !res.getValue(name).contains(num)) {
-            if (num != "") res += name to res.getValue(name) + ", " + num
+            if (num !in res.getValue(name)) res += name to res.getValue(name) + ", " + num
         } else {
             if (name !in res) res += name to num
         }
