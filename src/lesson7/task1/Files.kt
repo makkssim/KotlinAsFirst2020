@@ -250,7 +250,7 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
                     t += i
                 }
             }
-            if (line[0].isUpperCase() && t != "") t[0].toUpperCase()
+            if (line[0].isUpperCase() && t != "") t[0].toUpperCase() else t.toLowerCase()
             writer.write(t)
         }
         writer.newLine()
@@ -298,7 +298,7 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
         for (c in line.toLowerCase()) {
             if (c !in tl) tl.add(c)
         }
-        if (tl.size == line.length && line !in res) {
+        if (tl.size == line.length) {
             if (line.length > s) {
                 s = line.length
                 res = line
