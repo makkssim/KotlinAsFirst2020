@@ -175,7 +175,7 @@ fun bestLongJump(jumps: String): Int {
     val list1 = listOf<Char>('-', '%', ' ')
     val list2 = listOf<Char>('1', '2', '3', '4', '5', '6', '7', '8', '9', '0')
     for (c in jumps) {
-        if (c !in list2 && c !in list1 && c != '0') return -1
+        if (c !in list2 && c !in list1 || jumps == "") return -1
     }
     var a = jumps.split(" ")
 
@@ -194,7 +194,7 @@ fun bestLongJump(jumps: String): Int {
                 break
             }
         }
-        if(m && n) return -1
+        if (m && n) return -1
     }
     var k = -1;
     for (s in a) {

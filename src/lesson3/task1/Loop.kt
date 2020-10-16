@@ -278,8 +278,8 @@ fun powInt(a: Int, h: Int): Int {
     return j
 }
 
-fun squareSequenceDigit(n: Int): Int {
-    var i: Long = 0
+fun squareSequenceDigit(n: Int): Int { TODO()
+    /*var i: Long =
     var s: Long = 0
     var k: Long = 0
 
@@ -292,7 +292,7 @@ fun squareSequenceDigit(n: Int): Int {
             break
         }
     }
-    return ((i * i % powInt(10, k.toInt() + 1).toLong()) / powInt(10, k.toInt()).toLong()).toInt()
+    return ((i * i % powInt(10, k.toInt() + 1).toLong()) / powInt(10, k.toInt()).toLong()).toInt()*/
 }
 
 /**
