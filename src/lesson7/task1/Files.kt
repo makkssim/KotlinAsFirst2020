@@ -241,7 +241,7 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
         for ((old, new) in dictionary) {
             t = line.replace(old.toString(), new.toLowerCase(), true)
         }
-        if (line[0].isLowerCase()) t[0].toUpperCase()
+        if (line[0].isUpperCase() && t != "") t[0].toUpperCase()
         writer.write(t)
         writer.newLine()
     }
