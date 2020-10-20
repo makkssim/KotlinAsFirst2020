@@ -245,13 +245,13 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
             var builder = StringBuilder()
             for (i in line) {
                 if (i.toLowerCase() in dict) {
-                    builder.append(dict.getValue(i.toLowerCase()))
+                    if (i.isUpperCase()) builder.append(dict.getValue(i.toLowerCase()).capitalize())
+                    else builder.append(dict.getValue(i.toLowerCase()))
                 } else {
                     builder.append(i)
                 }
             }
-            if (line[0].isUpperCase()) writer.write(builder.toString().capitalize())
-            else writer.write(builder.toString())
+            writer.write(builder.toString())
         }
         writer.newLine()
     }

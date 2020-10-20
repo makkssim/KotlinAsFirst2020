@@ -211,7 +211,7 @@ Basic, Ruby, Swift.
             mapOf('з' to "zz", 'р' to "r", 'д' to "d", 'й' to "y", 'М' to "m", 'и' to "yy", '!' to "!!!"),
             "temp.txt"
         )
-        assertFileContent("temp.txt", "zzdrавствуy,\nmyyr!!!")
+        assertFileContent("temp.txt", "Zzdrавствуy,\nmyyr!!!")
         File("temp.txt").delete()
 
         transliterate(
@@ -219,7 +219,7 @@ Basic, Ruby, Swift.
             mapOf('з' to "zZ", 'р' to "r", 'д' to "d", 'й' to "y", 'М' to "m", 'и' to "YY", '!' to "!!!"),
             "temp.txt"
         )
-        assertFileContent("temp.txt", "zZdrавствуy,\nmYYr!!!")
+        assertFileContent("temp.txt", "Zzdrавствуy,\nmyyr!!!")
         File("temp.txt").delete()
     }
 
