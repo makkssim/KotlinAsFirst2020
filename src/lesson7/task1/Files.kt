@@ -240,19 +240,18 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
     for ((a, b) in dictionary) {
         dict += a.toLowerCase() to b.toLowerCase()
     }
-    for (line in File(inputName).readLines()) {
-        if (line == "") writer.write("") else {
-            var builder = StringBuilder()
-            for (i in line) {
-                if (i.toLowerCase() in dict) {
-                    if (i.isUpperCase()) builder.append(dict.getValue(i.toLowerCase()).capitalize())
-                    else builder.append(dict.getValue(i.toLowerCase()))
-                } else {
-                    builder.append(i)
-                }
-            }
-            writer.write(builder.toString())
+    val t = File(inputName).bufferedReader().toString()
+    for (i in t) {
+        var builder = StringBuilder()
+        if (i.toLowerCase() in dict) {
+            if (i.isUpperCase()) builder.append(dict.getValue(i.toLowerCase()).capitalize())
+            else builder.append(dict.getValue(i.toLowerCase()))
+        } else {
+            builder.append(i)
         }
+
+        writer.write(builder.toString())
+
         writer.newLine()
     }
     writer.close()
