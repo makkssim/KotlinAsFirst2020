@@ -64,13 +64,7 @@ fun main() {
     }
 }
 
-fun isdigit(str: String): Boolean {
-    val list = listOf<Char>('1', '2', '3', '4', '5', '6', '7', '8', '9', '0')
-    for (c in str) {
-        if (c !in list) return false
-    }
-    return true
-}
+
 
 /**
  * Средняя (4 балла)
@@ -84,8 +78,8 @@ fun isdigit(str: String): Boolean {
  * входными данными.
  */
 fun dateStrToDigit(str: String): String {
-    var parts = str.split(" ")
-    if (parts.size != 3 || !isdigit(parts[0]) || !isdigit(parts[2])) return ""
+    val parts = str.split(" ")
+    if (parts.size != 3 || parts[0].toIntOrNull() == null || parts[2].toIntOrNull() == null) return ""
     val month = when (parts[1]) {
         "января" -> 1
         "февраля" -> 2
@@ -102,7 +96,7 @@ fun dateStrToDigit(str: String): String {
         else -> return ""
     }
     return if (parts[0].toInt() > daysInMonth(month, parts[2].toInt())) "" else
-        twoDigitStr(parts[0].toInt()) + "." + twoDigitStr(month) + "." + parts[2]
+        "${twoDigitStr(parts[0].toInt())}.${twoDigitStr(month)}.${parts[2]}"
 
 }
 
@@ -117,10 +111,8 @@ fun dateStrToDigit(str: String): String {
  * входными данными.
  */
 fun dateDigitToStr(digital: String): String {
-    var parts = digital.split(".")
-    var day: String
-    if (parts.size != 3 || !isdigit(parts[0]) || !isdigit(parts[2]) || !isdigit(parts[1])) return ""
-    // if (parts[1][0].toString() == "0") parts[0].replace("0", "")
+    val parts = digital.split(".")
+    if (parts.size != 3 || parts[0].toIntOrNull() == null || parts[1].toIntOrNull() == null || parts[2].toIntOrNull() == null) return ""
     val month = when (parts[1].toInt()) {
         1 -> "января"
         2 -> "февраля"
@@ -178,28 +170,15 @@ fun bestLongJump(jumps: String): Int {
     for (c in jumps) {
         if (c !in list2 && c !in list1) return -1
     }
-    var a = jumps.split(" ")
-
+    val a = jumps.split(" ")
     for (s in a) {
-        var m = false
-        var n = false
-        for (c in list1) {
-            if (c in s) {
-                m = true
-                break
-            }
-        }
-        for (c in list2) {
-            if (c in s) {
-                n = true
-                break
-            }
-        }
-        if (m && n || s == "") return -1
+        val temp1 = list1 intersect s.toList()
+        val temp2 = list2 intersect s.toList()
+        if (temp1.isNotEmpty() && temp2.isNotEmpty() || s == "") return -1
     }
     var k = -1;
     for (s in a) {
-        if (isdigit(s) && s.toInt() > k) k = s.toInt()
+        if (s.toIntOrNull() != null && s.toInt() > k) k = s.toInt()
     }
     return k
 }

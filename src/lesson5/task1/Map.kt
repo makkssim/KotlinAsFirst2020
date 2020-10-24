@@ -100,12 +100,8 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
     val res = mutableMapOf<Int, List<String>>()
     var temp = mutableListOf<String>()
     for ((name, grade) in grades) {
-        if (grade in res) {
-            temp = res.getValue(grade).toMutableList()
-            temp.add(name)
-        } else {
-            temp.add(name)
-        }
+        temp = res.getOrDefault(grade, temp).toMutableList()
+        temp.add(name)
         res += grade to temp.toList()
         temp.clear()
     }
@@ -147,7 +143,7 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Map<Strin
     for ((k, v) in b) {
         if (k in a && v == a.getValue(k)) a.remove(k)
     }
-    return a.toMap()
+    return a
 }
 
 /**
@@ -160,7 +156,7 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Map<Strin
 fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
     val l = mutableListOf<String>()
     for (n in a) {
-        if (n in b && n !in l) l.add(n)
+        if (b.contains(n) && !l.contains(n)) l.add(n)
     }
     return l
 }
@@ -186,7 +182,7 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
     val res = mapA.toMutableMap()
     for ((name, num) in mapB) {
         if (name in res && (num !in res.getValue(name).split(", ") || num == "")) {
-            res += name to res.getValue(name) + ", " + num
+            res[name] = res.getValue(name) + ", " + num
         } else {
             if (name !in res) res += name to num
         }
@@ -209,13 +205,8 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
     val notres = mutableMapOf<String, Int>()
     val res = mutableMapOf<String, Double>()
     for ((a, b) in stockPrices) {
-        if (a in res) {
-            res += a to (res.getValue(a) * notres.getValue(a) + b) / (notres.getValue(a) + 1)
-            notres += a to notres.getValue(a) + 1
-        } else {
-            res += a to b
-            notres += a to 1
-        }
+        res[a] = (res.getOrDefault(a, b) * notres.getOrDefault(a, 0) + b) / (notres.getOrDefault(a, 0) + 1)
+        notres += a to notres.getOrDefault(a,0) + 1
     }
     return res
 }

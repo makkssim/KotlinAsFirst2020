@@ -3,6 +3,8 @@
 package lesson7.task1
 
 import java.io.File
+import java.nio.file.Files
+import java.nio.file.Paths
 
 // Урок 7: работа с файлами
 // Урок интегральный, поэтому его задачи имеют сильно увеличенную стоимость
@@ -68,7 +70,7 @@ fun deleteMarked(inputName: String, outputName: String) {
         if (line.isEmpty()) {
             writer.newLine()
         } else {
-            if (line[0] != '_') {
+            if (!line.startsWith("_")) {
                 writer.write(line)
                 writer.newLine()
             }
@@ -88,16 +90,13 @@ fun deleteMarked(inputName: String, outputName: String) {
  */
 fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
     val res = mutableMapOf<String, Int>()
-
     for (sub in substrings) {
         var temp = 0
         for (line in File(inputName).readLines()) {
-            for (i in 0..line.length - sub.length) {
-                var k = ""
-                for (j in i until i + sub.length) {
-                    k += line[j]
-                }
-                if (k.toLowerCase() == sub.toLowerCase()) temp++
+            var h = line.toLowerCase()
+            while (sub.toLowerCase() in h) {
+                temp++
+                h = h.substring(h.indexOf(sub.toLowerCase()) + 1)
             }
         }
         res += sub to temp
@@ -240,19 +239,16 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
     for ((a, b) in dictionary) {
         dict += a.toLowerCase() to b.toLowerCase()
     }
-    val t = File(inputName).bufferedReader().toString()
+    val t = String(Files.readAllBytes(Paths.get(inputName)))
     for (i in t) {
-        var builder = StringBuilder()
+        val builder = StringBuilder()
         if (i.toLowerCase() in dict) {
             if (i.isUpperCase()) builder.append(dict.getValue(i.toLowerCase()).capitalize())
             else builder.append(dict.getValue(i.toLowerCase()))
         } else {
             builder.append(i)
         }
-
         writer.write(builder.toString())
-
-        writer.newLine()
     }
     writer.close()
 }
@@ -287,11 +283,11 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
     var s = -1
     val writer = File(outputName).bufferedWriter()
     for (line in File(inputName).readLines()) {
-        var tl = mutableListOf<Char>()
-        for (c in line.toLowerCase()) {
-            if (c !in tl) tl.add(c)
-        }
-        if (tl.size == line.length) {
+        val tl = mutableListOf<Char>()
+        for (c in line.toLowerCase()) tl.add(c)
+        if (tl.size != line.length) {
+            continue
+        } else {
             if (line.length > s) {
                 s = line.length
                 res = line
@@ -304,7 +300,6 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
     }
     writer.write(res)
     writer.close()
-
 }
 
 /**
