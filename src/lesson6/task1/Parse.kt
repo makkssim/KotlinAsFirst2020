@@ -65,7 +65,6 @@ fun main() {
 }
 
 
-
 /**
  * Средняя (4 балла)
  *
@@ -79,23 +78,13 @@ fun main() {
  */
 fun dateStrToDigit(str: String): String {
     val parts = str.split(" ")
-    if (parts.size != 3 || parts[0].toIntOrNull() == null || parts[2].toIntOrNull() == null) return ""
-    val month = when (parts[1]) {
-        "января" -> 1
-        "февраля" -> 2
-        "марта" -> 3
-        "апреля" -> 4
-        "мая" -> 5
-        "июня" -> 6
-        "июля" -> 7
-        "августа" -> 8
-        "сентября" -> 9
-        "октября" -> 10
-        "ноября" -> 11
-        "декабря" -> 12
-        else -> return ""
-    }
-    return if (parts[0].toInt() > daysInMonth(month, parts[2].toInt())) "" else
+    val m = mapOf(
+        "января" to 1, "февраля" to 2, "марта" to 3, "апреля" to 4, "мая" to 5, "июня" to 6, "июля" to 7,
+        "августа" to 8, "сентября" to 9, "октября" to 10, "ноября" to 11, "декабря" to 12
+    )
+    if (parts.size != 3 || parts[0].toIntOrNull() == null || parts[2].toIntOrNull() == null || parts[1] !in m) return ""
+    val month = m[parts[1]]
+    return if (parts[0].toInt() > daysInMonth(month!!, parts[2].toInt())) "" else
         "${twoDigitStr(parts[0].toInt())}.${twoDigitStr(month)}.${parts[2]}"
 
 }
@@ -112,22 +101,13 @@ fun dateStrToDigit(str: String): String {
  */
 fun dateDigitToStr(digital: String): String {
     val parts = digital.split(".")
-    if (parts.size != 3 || parts[0].toIntOrNull() == null || parts[1].toIntOrNull() == null || parts[2].toIntOrNull() == null) return ""
-    val month = when (parts[1].toInt()) {
-        1 -> "января"
-        2 -> "февраля"
-        3 -> "марта"
-        4 -> "апреля"
-        5 -> "мая"
-        6 -> "июня"
-        7 -> "июля"
-        8 -> "августа"
-        9 -> "сентября"
-        10 -> "октября"
-        11 -> "ноября"
-        12 -> "декабря"
-        else -> return ""
-    }
+    val m = mapOf(
+        1 to "января", 2 to "февраля", 3 to "марта", 4 to "апреля", 5 to "мая", 6 to "июня",
+        7 to "июля", 8 to "августа", 9 to "сентября", 10 to "октября", 11 to "ноября", 12 to "декабря"
+    )
+    if (parts.size != 3 || parts[0].toIntOrNull() == null || parts[1].toIntOrNull() == null || parts[2].toIntOrNull() == null || parts[1].toInt() !in m
+    ) return ""
+    val month = m[parts[1].toInt()]
     return if (parts[0].toInt() > daysInMonth(parts[1].toInt(), parts[2].toInt())) "" else
         parts[0].toInt().toString() + " " + month + " " + parts[2]
 
@@ -164,8 +144,8 @@ fun flattenPhoneNumber(phone: String): String = TODO()
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
 fun bestLongJump(jumps: String): Int {
-    val list1 = listOf<Char>('-', '%', ' ')
-    val list2 = listOf<Char>('1', '2', '3', '4', '5', '6', '7', '8', '9', '0')
+    val list1 = setOf('-', '%', ' ')
+    val list2 = setOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0')
     if (jumps == "") return -1
     for (c in jumps) {
         if (c !in list2 && c !in list1) return -1

@@ -94,9 +94,9 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
         var temp = 0
         for (line in File(inputName).readLines()) {
             var h = line.toLowerCase()
-            while (sub.toLowerCase() in h) {
+            while (h.indexOf(sub, 0, true) > -1) {
                 temp++
-                h = h.substring(h.indexOf(sub.toLowerCase()) + 1)
+                h = h.substring(h.indexOf(sub, 0, true) + 1)
             }
         }
         res += sub to temp
@@ -239,12 +239,13 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
     for ((a, b) in dictionary) {
         dict += a.toLowerCase() to b.toLowerCase()
     }
-    val t = String(Files.readAllBytes(Paths.get(inputName)))
+    val t = File(inputName).readText()
     for (i in t) {
         val builder = StringBuilder()
-        if (i.toLowerCase() in dict) {
-            if (i.isUpperCase()) builder.append(dict.getValue(i.toLowerCase()).capitalize())
-            else builder.append(dict.getValue(i.toLowerCase()))
+        val y = dict[i.toLowerCase()]
+        if (y != null) {
+            if (i.isUpperCase()) builder.append(y.capitalize())
+            else builder.append(y)
         } else {
             builder.append(i)
         }
@@ -283,22 +284,20 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
     var s = -1
     val writer = File(outputName).bufferedWriter()
     for (line in File(inputName).readLines()) {
-        val tl = mutableListOf<Char>()
-        for (c in line.toLowerCase()) {
-            if (c !in tl) tl.add(c)
-        }
+        val tl = mutableSetOf<Char>()
+        for (c in line.toLowerCase()) tl.add(c)
         if (tl.size != line.length) {
             continue
+        }
+        if (line.length > s) {
+            s = line.length
+            res = line
         } else {
-            if (line.length > s) {
-                s = line.length
-                res = line
-            } else {
-                if (line.length == s) {
-                    res += ", $line"
-                }
+            if (line.length == s) {
+                res += ", $line"
             }
         }
+
     }
     writer.write(res)
     writer.close()
