@@ -93,14 +93,13 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
     for (sub in substrings) {
         var temp = 0
         for (line in File(inputName).readLines()) {
-            var h = line.toLowerCase()
+            var h = line
             while (h.indexOf(sub, 0, true) > -1) {
                 temp++
                 h = h.substring(h.indexOf(sub, 0, true) + 1)
             }
         }
-        res += sub to temp
-
+        res[sub] = temp
     }
     return res
 
@@ -284,8 +283,7 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
     var s = -1
     val writer = File(outputName).bufferedWriter()
     for (line in File(inputName).readLines()) {
-        val tl = mutableSetOf<Char>()
-        for (c in line.toLowerCase()) tl.add(c)
+        val tl = line.toLowerCase().toSet()
         if (tl.size != line.length) {
             continue
         }
@@ -297,7 +295,6 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
                 res += ", $line"
             }
         }
-
     }
     writer.write(res)
     writer.close()

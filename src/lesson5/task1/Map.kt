@@ -97,9 +97,9 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  *     -> mapOf(5 to listOf("Семён", "Михаил"), 3 to listOf("Марат"))
  */
 fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
-    val res = mutableMapOf<Int, MutableList<String>>()
+    val res = mutableMapOf<Int, List<String>>()
     for ((name, grade) in grades) {
-        res += grade to (res.getOrDefault(grade, mutableListOf()) + name).toMutableList()
+        res[grade] = res.getOrDefault(grade, mutableListOf()) + name
     }
     return res
 }
@@ -178,16 +178,15 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
     val res = mapA.toMutableMap()
     val podres = mutableMapOf<String, List<String>>()
     for ((a, b) in res) {
-        podres += a to b.split(", ")
+        podres[a] = b.split(", ")
     }
     for ((name, num) in mapB) {
-        if (name in res && (num !in podres[name]!! || num == "")) {
+        if (name in podres && num !in podres[name]!!) {
             res[name] = res.getValue(name) + ", " + num
             podres[name] = podres[name]!! + num
         } else {
             if (name !in res) res += name to num
         }
-
     }
     return res
 }
@@ -206,7 +205,7 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
     val notres = mutableMapOf<String, Int>()
     val res = mutableMapOf<String, Double>()
     for ((a, b) in stockPrices) {
-        res[a] = (res.getOrDefault(a, 0.0) * notres.getOrDefault(a, 0) + b) / (notres.getOrDefault(a, 0) + 1)
+        res[a] = ((res[a] ?: 0.0) * (notres[a] ?: 0) + b) / ((notres[a] ?: 0) + 1)
         notres[a] = notres.getOrDefault(a, 0) + 1
     }
     return res

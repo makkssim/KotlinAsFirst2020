@@ -83,8 +83,8 @@ fun dateStrToDigit(str: String): String {
         "августа" to 8, "сентября" to 9, "октября" to 10, "ноября" to 11, "декабря" to 12
     )
     if (parts.size != 3 || parts[0].toIntOrNull() == null || parts[2].toIntOrNull() == null || parts[1] !in m) return ""
-    val month = m[parts[1]]
-    return if (parts[0].toInt() > daysInMonth(month!!, parts[2].toInt())) "" else
+    val month = m[parts[1]] ?: 0
+    return if (parts[0].toInt() > daysInMonth(month, parts[2].toInt())) "" else
         "${twoDigitStr(parts[0].toInt())}.${twoDigitStr(month)}.${parts[2]}"
 
 }
@@ -105,7 +105,8 @@ fun dateDigitToStr(digital: String): String {
         1 to "января", 2 to "февраля", 3 to "марта", 4 to "апреля", 5 to "мая", 6 to "июня",
         7 to "июля", 8 to "августа", 9 to "сентября", 10 to "октября", 11 to "ноября", 12 to "декабря"
     )
-    if (parts.size != 3 || parts[0].toIntOrNull() == null || parts[1].toIntOrNull() == null || parts[2].toIntOrNull() == null || parts[1].toInt() !in m
+    if (parts.size != 3 || parts[0].toIntOrNull() == null || parts[1].toIntOrNull() == null ||
+        parts[2].toIntOrNull() == null || parts[1].toInt() !in m
     ) return ""
     val month = m[parts[1].toInt()]
     return if (parts[0].toInt() > daysInMonth(parts[1].toInt(), parts[2].toInt())) "" else
@@ -158,7 +159,8 @@ fun bestLongJump(jumps: String): Int {
     }
     var k = -1;
     for (s in a) {
-        if (s.toIntOrNull() != null && s.toInt() > k) k = s.toInt()
+        s.toIntOrNull() ?: continue
+        if (s.toInt() > k) k = s.toInt()
     }
     return k
 }
