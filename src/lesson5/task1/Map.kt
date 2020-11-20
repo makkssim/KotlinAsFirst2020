@@ -2,6 +2,8 @@
 
 package lesson5.task1
 
+import lesson4.task1.convertToString
+
 // Урок 5: ассоциативные массивы и множества
 // Максимальное количество баллов = 14
 // Рекомендуемое количество баллов = 9
@@ -150,11 +152,11 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Map<Strin
  * т. е. whoAreInBoth(listOf("Марат", "Семён, "Марат"), listOf("Марат", "Марат")) == listOf("Марат")
  */
 fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
-    val l = mutableListOf<String>()
+    val l = mutableSetOf<String>()
     for (n in a) {
         if (n in b && n !in l) l.add(n)
     }
-    return l
+    return l.toList()
 }
 
 /**
@@ -175,18 +177,20 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
 fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
-    val res = mapA.toMutableMap()
+    var res = mapOf<String, String>()
     val podres = mutableMapOf<String, List<String>>()
-    for ((a, b) in res) {
-        podres[a] = b.split(", ")
+    for ((a, b) in mapA) {
+        podres[a] = listOf(b)
     }
     for ((name, num) in mapB) {
         if (name in podres && num !in podres[name]!!) {
-            res[name] = res.getValue(name) + ", " + num
             podres[name] = podres[name]!! + num
         } else {
-            if (name !in res) res += name to num
+            if (name !in podres) podres += name to listOf(num)
         }
+    }
+    for ((name, num) in podres) {
+        res += name to num.joinToString()
     }
     return res
 }

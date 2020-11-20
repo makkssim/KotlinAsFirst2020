@@ -159,8 +159,8 @@ fun bestLongJump(jumps: String): Int {
     }
     var k = -1;
     for (s in a) {
-        s.toIntOrNull() ?: continue
-        if (s.toInt() > k) k = s.toInt()
+        val h = s.toIntOrNull() ?: continue
+        if (h > k) k = h
     }
     return k
 }

@@ -93,16 +93,15 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
     for (sub in substrings) {
         var temp = 0
         for (line in File(inputName).readLines()) {
-            var h = line
-            while (h.indexOf(sub, 0, true) > -1) {
+            var sym = line.indexOf(sub, 0, true)
+            while (line.indexOf(sub, sym, true) > -1) {
                 temp++
-                h = h.substring(h.indexOf(sub, 0, true) + 1)
+                sym = line.indexOf(sub, sym, true) + 1
             }
         }
         res[sub] = temp
     }
     return res
-
 }
 
 
