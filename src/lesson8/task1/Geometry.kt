@@ -84,6 +84,7 @@ data class Circle(val center: Point, val radius: Double) {
      */
     fun distance(other: Circle): Double = TODO()
 
+
     /**
      * Тривиальная (1 балл)
      *

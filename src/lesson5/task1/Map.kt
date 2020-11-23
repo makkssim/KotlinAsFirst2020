@@ -177,7 +177,6 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
 fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
-    var res = mapOf<String, String>()
     val podres = mutableMapOf<String, List<String>>()
     for ((a, b) in mapA) {
         podres[a] = listOf(b)
@@ -186,11 +185,12 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
         if (name in podres && num !in podres[name]!!) {
             podres[name] = podres[name]!! + num
         } else {
-            if (name !in podres) podres += name to listOf(num)
+            if (name !in podres) podres[name] = listOf(num)
         }
     }
+    val res = mutableMapOf<String, String>()
     for ((name, num) in podres) {
-        res += name to num.joinToString()
+        res[name] = num.joinToString()
     }
     return res
 }
