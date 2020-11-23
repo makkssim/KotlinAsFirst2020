@@ -92,13 +92,13 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
     val res = mutableMapOf<String, Int>()
     for (sub in substrings) {
         var temp = 0
-        for (line in File(inputName).readLines()) {
-            var sym = line.indexOf(sub, 0, true)
-            while (sym > -1) {
-                temp++
-                sym = line.indexOf(sub, sym + 1, true)
-            }
+        val t = File(inputName).readText()
+        var sym = t.indexOf(sub, 0, true)
+        while (sym > -1) {
+            temp++
+            sym = t.indexOf(sub, sym + 1, true)
         }
+
         res[sub] = temp
     }
     return res
