@@ -547,28 +547,26 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         simvs("-", temp.toString().length + 1),
         "\n"
     )
-    var omg = 0
     while (joka != "") {
         spaces += boka.toString().length - (boka - temp).toString().length
         boka -= temp
         while ((boka < rhv) && (joka != "")) {
-            if (omg == 1 && boka == 0) spaces++
             builder.append(simvs(" ", spaces), boka, joka[0])
-            omg = if (boka == 0) 1 else 0
+            spaces += if (boka == 0) 1 else 0
             boka = boka * 10 + joka[0].toString().toInt()
             joka = joka.drop(1)
             temp = boka - boka % rhv
             builder.append(
                 "\n",
-                simvs(" ", spaces + boka.toString().length - temp.toString().length - 1 + omg), "-$temp\n",
-                simvs(" ", spaces + boka.toString().length - temp.toString().length - 1 + omg),
+                simvs(" ", spaces + boka.toString().length - temp.toString().length - 1), "-$temp\n",
+                simvs(" ", spaces + boka.toString().length - temp.toString().length - 1),
                 simvs("-", temp.toString().length + 1),
                 "\n"
             )
         }
     }
     spaces += boka.toString().length - (boka - temp).toString().length
-    builder.append(simvs(" ", spaces + omg), boka - temp)
+    builder.append(simvs(" ", spaces), boka - temp)
     writer.write(builder.toString())
     writer.close()
 }

@@ -53,8 +53,7 @@ fun quadraticRootProduct(a: Double, b: Double, c: Double): Double {
  * Пример главной функции
  */
 fun main() {
-    val x1x2 = quadraticRootProduct(1.0, 13.0, 42.0)
-    println("Root product: $x1x2")
+    print(" 108931 | 2\n-10       54465\n---\n  08\n  -8\n  --\n   09\n   -8\n   --\n   13\n  -12\n  ---\n    11\n   -10\n   ---\n     1 \n\n\n 108931 | 2\n-10       54465\n---\n  08\n  -8\n  --\n   09\n   -8\n   --\n    13\n   -12\n   ---\n     11\n    -10\n    ---\n      1" )
 }
 
 /**
