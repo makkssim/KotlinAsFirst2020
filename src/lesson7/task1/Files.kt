@@ -511,7 +511,60 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
  * Используемые пробелы, отступы и дефисы должны в точности соответствовать примеру.
  *
  */
+fun divabc(a: Int, b: Int): Pair<Int, String> {
+    var num = a.toString()
+    var res = 0
+    while (res < b) {
+        res = res * 10 + num[0].toString().toInt()
+        num = num.drop(1)
+    }
+    return res to num
+}
+
+fun simvs(a: String, b: Int): String {
+    var s = ""
+    for (i in 1..b) {
+        s += a
+    }
+    return s
+}
+
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
-    TODO()
+    val writer = File(outputName).bufferedWriter()
+    val builder = StringBuilder()
+    builder.append(" $lhv | $rhv\n")
+    var boka = divabc(lhv, rhv).first
+    var joka = divabc(lhv, rhv).second
+    var temp = boka - boka % rhv
+    builder.append(
+        "-${temp}",
+        simvs(" ", lhv.toString().length - temp.toString().length + 3),
+        "${lhv / rhv}\n",
+        simvs("-", temp.toString().length + 1),
+        "\n"
+    )
+    var spaces = 1
+    while (joka != "") {
+        spaces += boka.toString().length - (boka - temp).toString().length
+        boka -= temp
+        while ((boka < rhv) && (joka != "")) {
+            builder.append(simvs(" ", spaces), boka, joka[0])
+            boka = boka * 10 + joka[0].toString().toInt()
+            joka = joka.drop(1)
+            temp = boka - boka % rhv
+            builder.append(
+                "\n",
+                simvs(" ", spaces + boka.toString().length - temp.toString().length - 1),
+                "-$temp\n",
+                simvs(" ", spaces + boka.toString().length - temp.toString().length - 1),
+                simvs("-", temp.toString().length + 1),
+                "\n"
+            )
+        }
+    }
+    spaces += boka.toString().length - (boka - temp).toString().length
+    builder.append(simvs(" ", spaces), boka - temp)
+    writer.write(builder.toString())
+    writer.close()
 }
 
