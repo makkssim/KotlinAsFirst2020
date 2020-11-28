@@ -512,6 +512,7 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
  *
  */
 fun divabc(a: Int, b: Int): Pair<Int, String> {
+    if (a < b) return a to ""
     var num = a.toString()
     var res = 0
     while (res < b) {
@@ -536,34 +537,38 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     var boka = divabc(lhv, rhv).first
     var joka = divabc(lhv, rhv).second
     var temp = boka - boka % rhv
+    var spaces = 1
     builder.append(
+        simvs(" ", boka.toString().length - temp.toString().length),
         "-${temp}",
-        simvs(" ", lhv.toString().length - temp.toString().length + 3),
+        simvs(" ", lhv.toString().length - boka.toString().length + 3),
         "${lhv / rhv}\n",
+        simvs(" ", boka.toString().length - temp.toString().length),
         simvs("-", temp.toString().length + 1),
         "\n"
     )
-    var spaces = 1
+    var omg = 0
     while (joka != "") {
         spaces += boka.toString().length - (boka - temp).toString().length
         boka -= temp
         while ((boka < rhv) && (joka != "")) {
+            if (omg == 1 && boka == 0) spaces++
             builder.append(simvs(" ", spaces), boka, joka[0])
+            omg = if (boka == 0) 1 else 0
             boka = boka * 10 + joka[0].toString().toInt()
             joka = joka.drop(1)
             temp = boka - boka % rhv
             builder.append(
                 "\n",
-                simvs(" ", spaces + boka.toString().length - temp.toString().length - 1),
-                "-$temp\n",
-                simvs(" ", spaces + boka.toString().length - temp.toString().length - 1),
+                simvs(" ", spaces + boka.toString().length - temp.toString().length - 1 + omg), "-$temp\n",
+                simvs(" ", spaces + boka.toString().length - temp.toString().length - 1 + omg),
                 simvs("-", temp.toString().length + 1),
                 "\n"
             )
         }
     }
     spaces += boka.toString().length - (boka - temp).toString().length
-    builder.append(simvs(" ", spaces), boka - temp)
+    builder.append(simvs(" ", spaces + omg), boka - temp)
     writer.write(builder.toString())
     writer.close()
 }
