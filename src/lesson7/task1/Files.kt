@@ -3,6 +3,7 @@
 package lesson7.task1
 
 import java.io.File
+import java.lang.Integer.max
 import java.nio.file.Files
 import java.nio.file.Paths
 
@@ -559,8 +560,8 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
             builder.append(
                 "\n",
                 simvs(" ", spaces + boka.toString().length - temp.toString().length - 1), "-$temp\n",
-                simvs(" ", spaces + boka.toString().length - temp.toString().length - 1),
-                simvs("-", temp.toString().length + 1),
+                simvs(" ", spaces + boka.toString().length - max(temp.toString().length + 1, boka.toString().length)),
+                simvs("-", max(temp.toString().length + 1, boka.toString().length)),
                 "\n"
             )
         }
