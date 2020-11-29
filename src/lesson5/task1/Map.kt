@@ -3,6 +3,8 @@
 package lesson5.task1
 
 import lesson4.task1.convertToString
+import java.lang.Integer.min
+import java.lang.Math.max
 
 // Урок 5: ассоциативные массивы и множества
 // Максимальное количество баллов = 14
@@ -335,6 +337,8 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
             if (ls[a] + ls[b] == number) return a to b
             else if (ls[a] + ls[b] < number) a++ else b--
         }
+        return min(list.indexOf(ls[a]), list.indexOf(ls[b])) to
+                list.indexOf(ls[a]).coerceAtLeast(list.indexOf(ls[b]))
     }
     return -1 to -1
 }

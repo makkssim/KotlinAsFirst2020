@@ -317,8 +317,10 @@ fun russian(n: Int): String {
         builder.append(words3[n / 100000] + " ")
         if ((n % 100000) / 1000 < 20) builder.append(words[(n % 100000) / 1000])
         else builder.append(words2[(n % 100000) / 10000] + " " + words[(n % 10000) / 1000])
-        when ((n / 1000) % 10) {
-            0, 5, 6, 7, 8, 9 -> builder.append(" тысяч ")
+        var temp = 0
+        temp = if ((n / 1000) % 100 > 19) (n / 1000) % 10 else (n / 1000) % 100
+        when (temp) {
+            0, in 5..19 -> builder.append(" тысяч ")
             1 -> builder.append(" тысяча ")
             2, 3, 4 -> builder.append(" тысячи ")
         }

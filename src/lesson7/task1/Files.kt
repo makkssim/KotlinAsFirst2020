@@ -521,21 +521,25 @@ fun divabc(a: Int, b: Int): Pair<Int, String> {
     return res to num
 }
 
-
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     val writer = File(outputName).bufferedWriter()
     val builder = StringBuilder()
-    builder.append(" $lhv | $rhv\n")
     var mindividend = divabc(lhv, rhv).first
     var remains = divabc(lhv, rhv).second
     var multiple = mindividend - mindividend % rhv
     var spaces = 1
-    repeat(mindividend.toString().length - multiple.toString().length) { builder.append(" ") }
+    var temp = 0
+    if (mindividend.toString().length <= multiple.toString().length)
+        builder.append(" ") else {
+        spaces--
+        temp--
+    }
+    builder.append("$lhv | $rhv\n")
+    repeat(mindividend.toString().length - multiple.toString().length + temp) { builder.append(" ") }
     builder.append("-${multiple}")
     repeat(lhv.toString().length - mindividend.toString().length + 3) { builder.append(" ") }
     builder.append("${lhv / rhv}\n")
-    repeat(mindividend.toString().length - multiple.toString().length) { builder.append(" ") }
-    repeat(multiple.toString().length + 1) { builder.append("-") }
+    repeat(max(multiple.toString().length + 1, mindividend.toString().length)) { builder.append("-") }
     builder.append("\n")
     while (remains != "") {
         spaces += mindividend.toString().length - (mindividend - multiple).toString().length
