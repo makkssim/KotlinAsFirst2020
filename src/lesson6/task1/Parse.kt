@@ -211,7 +211,24 @@ fun firstDuplicateIndex(str: String): Int = TODO()
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть больше нуля либо равны нулю.
  */
-fun mostExpensive(description: String): String = TODO()
+fun mostExpensive(description: String): String {
+    val list = description.split("; ")
+    val mp = mutableMapOf<String, Double>()
+    for (par in list) {
+        var a = par.split(" ")
+        if (a.size != 2) return ""
+        mp[a[0]] = a[1].toDouble()
+    }
+    var res = ""
+    var res1 = -1.0
+    for ((key, value) in mp) {
+        if (value > res1) {
+            res = key
+            res1 = value
+        }
+    }
+    return res
+}
 
 /**
  * Сложная (6 баллов)

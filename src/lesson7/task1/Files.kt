@@ -4,8 +4,6 @@ package lesson7.task1
 
 import java.io.File
 import java.lang.Integer.max
-import java.nio.file.Files
-import java.nio.file.Paths
 
 // Урок 7: работа с файлами
 // Урок интегральный, поэтому его задачи имеют сильно увеличенную стоимость
@@ -523,51 +521,49 @@ fun divabc(a: Int, b: Int): Pair<Int, String> {
     return res to num
 }
 
-fun simvs(a: String, b: Int): String {
-    var s = ""
-    for (i in 1..b) {
-        s += a
-    }
-    return s
-}
 
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     val writer = File(outputName).bufferedWriter()
     val builder = StringBuilder()
     builder.append(" $lhv | $rhv\n")
-    var boka = divabc(lhv, rhv).first
-    var joka = divabc(lhv, rhv).second
-    var temp = boka - boka % rhv
+    var mindividend = divabc(lhv, rhv).first
+    var remains = divabc(lhv, rhv).second
+    var multiple = mindividend - mindividend % rhv
     var spaces = 1
-    builder.append(
-        simvs(" ", boka.toString().length - temp.toString().length),
-        "-${temp}",
-        simvs(" ", lhv.toString().length - boka.toString().length + 3),
-        "${lhv / rhv}\n",
-        simvs(" ", boka.toString().length - temp.toString().length),
-        simvs("-", temp.toString().length + 1),
-        "\n"
-    )
-    while (joka != "") {
-        spaces += boka.toString().length - (boka - temp).toString().length
-        boka -= temp
-        while ((boka < rhv) && (joka != "")) {
-            builder.append(simvs(" ", spaces), boka, joka[0])
-            spaces += if (boka == 0) 1 else 0
-            boka = boka * 10 + joka[0].toString().toInt()
-            joka = joka.drop(1)
-            temp = boka - boka % rhv
-            builder.append(
-                "\n",
-                simvs(" ", spaces + boka.toString().length - temp.toString().length - 1), "-$temp\n",
-                simvs(" ", spaces + boka.toString().length - max(temp.toString().length + 1, boka.toString().length)),
-                simvs("-", max(temp.toString().length + 1, boka.toString().length)),
-                "\n"
+    repeat(mindividend.toString().length - multiple.toString().length) { builder.append(" ") }
+    builder.append("-${multiple}")
+    repeat(lhv.toString().length - mindividend.toString().length + 3) { builder.append(" ") }
+    builder.append("${lhv / rhv}\n")
+    repeat(mindividend.toString().length - multiple.toString().length) { builder.append(" ") }
+    repeat(multiple.toString().length + 1) { builder.append("-") }
+    builder.append("\n")
+    while (remains != "") {
+        spaces += mindividend.toString().length - (mindividend - multiple).toString().length
+        mindividend -= multiple
+        while ((mindividend < rhv) && (remains != "")) {
+            repeat(spaces) { builder.append(" ") }
+            builder.append(mindividend, remains[0])
+            spaces += if (mindividend == 0) 1 else 0
+            mindividend = mindividend * 10 + remains[0].toString().toInt()
+            remains = remains.drop(1)
+            multiple = mindividend - mindividend % rhv
+            builder.append("\n")
+            repeat(spaces + mindividend.toString().length - multiple.toString().length - 1) { builder.append(" ") }
+            builder.append("-$multiple\n")
+            repeat(
+                spaces + mindividend.toString().length - max(
+                    multiple.toString().length + 1,
+                    mindividend.toString().length
+                )
             )
+            { builder.append(" ") }
+            repeat(max(multiple.toString().length + 1, mindividend.toString().length)) { builder.append("-") }
+            builder.append("\n")
         }
     }
-    spaces += boka.toString().length - (boka - temp).toString().length
-    builder.append(simvs(" ", spaces), boka - temp)
+    spaces += mindividend.toString().length - (mindividend - multiple).toString().length
+    repeat(spaces) { builder.append(" ") }
+    builder.append(mindividend - multiple)
     writer.write(builder.toString())
     writer.close()
 }
