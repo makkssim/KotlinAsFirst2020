@@ -230,72 +230,22 @@ fun minContainingCircle(vararg points: Point): Circle {
         Point((points[1].x + points[0].x) / 2, (points[1].y + points[0].y) / 2),
         points[1].distance(points[0]) / 2
     )
-    var maxdist = 0.0
-    var temp = Point(0.0, 0.0)
-    for (a in points) {
-        if (a.distance(points[0]) > maxdist) {
-            maxdist = a.distance(points[0])
-            temp = a
-        }
-    }
-    if (maxdist == 0.0) return Circle(points[0], 0.0)
-    var opor = setOf(points[0], temp)
-    var cir = Circle(
-        Point((temp.x + points[0].x) / 2, (temp.y + points[0].y) / 2),
-        temp.distance(points[0]) / 2
-    )
-    while (true) {
-        var n = true
-        for (i in points) {
-            if (!cir.contains(i)) n = false
-        }
-        if (n) break
-        val r = cir.radius
-        maxdist = 0.0
-        temp = Point(0.0, 0.0)
-        for (a in points) {
-            if (a.distance(cir.center) > maxdist) {
-                maxdist = a.distance(cir.center)
-                temp = a
-            }
-        }
-        if (maxdist <= cir.radius) break
-        var maxdistopor = 0.0
-        var tempopor = Point(0.0, 0.0)
-        for (a in opor) {
-            if (a.distance(temp) > maxdistopor) {
-                maxdistopor = a.distance(temp)
-                tempopor = a
-            }
-        }
-        cir = Circle(
-            Point((temp.x + tempopor.x) / 2, (temp.y + tempopor.y) / 2),
-            temp.distance(tempopor) / 2
-        )
-        var tempopor2 = Point(0.0, 0.0)
-        var maxdistopor2 = 0.0
-        if (opor.size == 3) {
-            for (a in opor) {
-                if (a.distance(cir.center) > maxdistopor2 && a != tempopor) {
-                    maxdistopor2 = a.distance(cir.center)
-                    tempopor2 = a
+    var cir: Circle
+    var min = Circle(Point(0.0, 0.0), Double.MAX_VALUE)
+    for (i in points.indices) {
+        for (j in points.indices) {
+            for (k in points.indices) {
+                cir = circleByThreePoints(points[i], points[j], points[k])
+                var n = true
+                for (s in points) {
+                    if (!cir.contains(s)) n = false
                 }
-            }
-            if (!cir.contains(tempopor2)) {
-                opor = setOf(temp, tempopor, tempopor2)
-                cir = circleByThreePoints(temp, tempopor, tempopor2)
-            } else opor = setOf(temp, tempopor)
-        } else {
-            for (a in opor) {
-                if (a != tempopor) tempopor2 = a
-            }
-            if (cir.contains(tempopor2)) opor = setOf(temp, tempopor) else {
-                opor = setOf(temp, tempopor, tempopor2)
-                cir = circleByThreePoints(temp, tempopor, tempopor2)
+                if (n && cir.radius < min.radius) min = cir
+
             }
         }
-        if (r == cir.radius) break
     }
-    return cir
+return min
+
 }
 
