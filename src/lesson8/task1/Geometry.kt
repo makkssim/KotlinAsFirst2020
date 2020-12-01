@@ -3,6 +3,7 @@
 package lesson8.task1
 
 import lesson1.task1.sqr
+import java.lang.IllegalArgumentException
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
@@ -196,7 +197,19 @@ fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> = TODO()
  * (построить окружность по трём точкам, или
  * построить окружность, описанную вокруг треугольника - эквивалентная задача).
  */
-fun circleByThreePoints(a: Point, b: Point, c: Point): Circle = TODO()
+fun circleByThreePoints(a: Point, b: Point, c: Point): Circle {
+    val mid1 = Point((a.x + b.x) / 2.0, (a.y + b.y) / 2.0)
+    val mid2 = Point((a.x + c.x) / 2.0, (a.y + c.y) / 2.0)
+    val a1 = b.x - a.x
+    val b1 = b.y - a.y
+    val c1 = mid1.x * a1 + mid1.y * b1
+    val a2 = c.x - a.x
+    val b2 = c.y - a.y
+    val c2 = mid2.x * a2 + mid2.y * b2
+    val center = Point((c1 * b2 - c2 * b1) / (a1 * b2 - a2 * b1), (a1 * c2 - a2 * c1) / (a1 * b2 - a2 * b1))
+    val r = sqrt(sqr(center.x - a.x) + sqr(center.y - a.y))
+    return Circle(center, r)
+}
 
 /**
  * Очень сложная (10 баллов)
@@ -209,5 +222,75 @@ fun circleByThreePoints(a: Point, b: Point, c: Point): Circle = TODO()
  * три точки данного множества, либо иметь своим диаметром отрезок,
  * соединяющий две самые удалённые точки в данном множестве.
  */
-fun minContainingCircle(vararg points: Point): Circle = TODO()
+
+fun minContainingCircle(vararg points: Point): Circle {
+    if (points.isEmpty()) throw IllegalArgumentException()
+    if (points.size == 1) return Circle(points[0], 0.0)
+    if (points.size == 2) return Circle(
+        Point((points[1].x + points[0].x) / 2, (points[1].y + points[0].y) / 2),
+        points[1].distance(points[0]) / 2
+    )
+    var maxdist = 0.0
+    var temp = Point(0.0, 0.0)
+    for (a in points) {
+        if (a.distance(points[0]) > maxdist) {
+            maxdist = a.distance(points[0])
+            temp = a
+        }
+    }
+    if (maxdist == 0.0) return Circle(points[0], 0.0)
+    var opor = setOf(points[0], temp)
+    var cir = Circle(
+        Point((temp.x + points[0].x) / 2, (temp.y + points[0].y) / 2),
+        temp.distance(points[0]) / 2
+    )
+    while (true) {
+        val r = cir.radius
+        maxdist = 0.0
+        for (a in points) {
+            if (a.distance(cir.center) > maxdist) {
+                maxdist = a.distance(points[0])
+                temp = a
+            }
+        }
+        if (maxdist <= cir.radius || temp in opor) break
+        var maxdistopor = 0.0
+        var tempopor = Point(0.0, 0.0)
+        for (a in opor) {
+            if (a.distance(temp) > maxdistopor) {
+                maxdistopor = a.distance(temp)
+                tempopor = a
+            }
+        }
+        cir = Circle(
+            Point((temp.x + tempopor.x) / 2, (temp.y + tempopor.y) / 2),
+            temp.distance(tempopor) / 2
+        )
+        var tempopor2 = Point(0.0, 0.0)
+        var maxdistopor2 = 0.0
+        if (opor.size == 3) {
+            for (a in opor) {
+                if (a.distance(cir.center) > maxdistopor2 && a != tempopor) {
+                    maxdistopor2 = a.distance(temp)
+                    tempopor2 = a
+                }
+            }
+            if (tempopor2.distance(cir.center) > cir.radius) {
+                opor = setOf(temp, tempopor, tempopor2)
+                cir = circleByThreePoints(temp, tempopor, tempopor2)
+            } else opor = setOf(temp, tempopor)
+        } else {
+            for (a in opor) {
+                if (a != tempopor) tempopor2 = a
+            }
+            if (tempopor2.distance(cir.center) <= cir.radius) opor = setOf(temp, tempopor) else {
+                opor = setOf(temp, tempopor, tempopor2)
+                cir = circleByThreePoints(temp, tempopor, tempopor2)
+            }
+
+        }
+        if (r == cir.radius) break
+    }
+    return cir
+}
 
