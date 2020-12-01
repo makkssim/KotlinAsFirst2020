@@ -91,7 +91,7 @@ data class Circle(val center: Point, val radius: Double) {
      *
      * Вернуть true, если и только если окружность содержит данную точку НА себе или ВНУТРИ себя
      */
-    fun contains(p: Point): Boolean = TODO()
+    fun contains(p: Point): Boolean = (p.distance(center) <= radius)
 }
 
 /**
@@ -247,13 +247,14 @@ fun minContainingCircle(vararg points: Point): Circle {
     while (true) {
         val r = cir.radius
         maxdist = 0.0
+        temp = Point(0.0, 0.0)
         for (a in points) {
             if (a.distance(cir.center) > maxdist) {
-                maxdist = a.distance(points[0])
+                maxdist = a.distance(cir.center)
                 temp = a
             }
         }
-        if (maxdist <= cir.radius || temp in opor) break
+        //if (maxdist <= cir.radius || temp in opor) break
         var maxdistopor = 0.0
         var tempopor = Point(0.0, 0.0)
         for (a in opor) {
@@ -271,11 +272,11 @@ fun minContainingCircle(vararg points: Point): Circle {
         if (opor.size == 3) {
             for (a in opor) {
                 if (a.distance(cir.center) > maxdistopor2 && a != tempopor) {
-                    maxdistopor2 = a.distance(temp)
+                    maxdistopor2 = a.distance(cir.center)
                     tempopor2 = a
                 }
             }
-            if (tempopor2.distance(cir.center) > cir.radius) {
+            if (!cir.contains(tempopor2)) {
                 opor = setOf(temp, tempopor, tempopor2)
                 cir = circleByThreePoints(temp, tempopor, tempopor2)
             } else opor = setOf(temp, tempopor)
@@ -283,11 +284,10 @@ fun minContainingCircle(vararg points: Point): Circle {
             for (a in opor) {
                 if (a != tempopor) tempopor2 = a
             }
-            if (tempopor2.distance(cir.center) <= cir.radius) opor = setOf(temp, tempopor) else {
+            if (cir.contains(tempopor2)) opor = setOf(temp, tempopor) else {
                 opor = setOf(temp, tempopor, tempopor2)
                 cir = circleByThreePoints(temp, tempopor, tempopor2)
             }
-
         }
         if (r == cir.radius) break
     }
