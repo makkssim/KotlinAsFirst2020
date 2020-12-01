@@ -245,6 +245,11 @@ fun minContainingCircle(vararg points: Point): Circle {
         temp.distance(points[0]) / 2
     )
     while (true) {
+        var n = true
+        for (i in points) {
+            if (!cir.contains(i)) n = false
+        }
+        if (n) break
         val r = cir.radius
         maxdist = 0.0
         temp = Point(0.0, 0.0)
