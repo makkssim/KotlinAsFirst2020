@@ -230,7 +230,24 @@ fun minContainingCircle(vararg points: Point): Circle {
         Point((points[1].x + points[0].x) / 2, (points[1].y + points[0].y) / 2),
         points[1].distance(points[0]) / 2
     )
-    var cir: Circle
+    var max = 0.0
+    var max1 = Point(0.0, 0.0)
+    var max2 = Point(0.0, 0.0)
+    for (i in points) {
+        for (j in points) {
+            if (i.distance(j) > max) {
+                max = i.distance(j)
+                max1 = i
+                max2 = j
+            }
+        }
+    }
+    var cir = Circle(Point((max1.x + max2.x) / 2, (max1.y + max2.y) / 2), max1.distance(max2) / 2.0)
+    var n = true
+    for (s in points) {
+        if (!cir.contains(s)) n = false
+    }
+    if (n) return cir
     var min = Circle(Point(0.0, 0.0), Double.MAX_VALUE)
     for (i in points.indices) {
         for (j in points.indices) {
@@ -245,6 +262,7 @@ fun minContainingCircle(vararg points: Point): Circle {
             }
         }
     }
+
 return min
 
 }
