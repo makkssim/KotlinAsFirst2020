@@ -254,7 +254,7 @@ fun minContainingCircle(vararg points: Point): Circle {
                 temp = a
             }
         }
-        //if (maxdist <= cir.radius || temp in opor) break
+        if (maxdist <= cir.radius) break
         var maxdistopor = 0.0
         var tempopor = Point(0.0, 0.0)
         for (a in opor) {
