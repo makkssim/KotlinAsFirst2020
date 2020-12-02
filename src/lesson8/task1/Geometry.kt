@@ -112,6 +112,7 @@ data class Segment(val begin: Point, val end: Point) {
  * Если в множестве менее двух точек, бросить IllegalArgumentException
  */
 fun diameter(vararg points: Point): Segment {
+    if (points.size < 2) throw IllegalArgumentException()
     var max = 0.0
     var max1 = Point(0.0, 0.0)
     var max2 = Point(0.0, 0.0)
@@ -251,9 +252,8 @@ fun minContainingCircle(vararg points: Point): Circle {
     for (s in points) {
         if (!cir.contains(s)) n = false
     }
-    var min: Circle
-    if (n) return cir
-    min = Circle(Point(0.0, 0.0), Double.MAX_VALUE)
+    if (n) cir
+    var min = Circle(Point(0.0, 0.0), Double.MAX_VALUE)
     for (i in points.indices) {
         for (j in points.indices) {
             for (k in points.indices) {
