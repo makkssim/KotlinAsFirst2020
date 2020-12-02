@@ -74,7 +74,7 @@ class Triangle private constructor(private val points: Set<Point>) {
 /**
  * Окружность с заданным центром и радиусом
  */
-data class Circle(val center: Point, val radius: Double) {
+data class Circle(val center: Point, var radius: Double) {
     /**
      * Простая (2 балла)
      *
@@ -134,7 +134,10 @@ fun diameter(vararg points: Point): Segment {
  * Построить окружность по её диаметру, заданному двумя точками
  * Центр её должен находиться посередине между точками, а радиус составлять половину расстояния между ними
  */
-fun circleByDiameter(diameter: Segment): Circle = TODO()
+fun circleByDiameter(diameter: Segment): Circle = Circle(
+    Point((diameter.begin.x + diameter.end.x) / 2, (diameter.begin.y + diameter.end.y) / 2),
+    diameter.begin.distance(diameter.end) / 2.0
+)
 
 /**
  * Прямая, заданная точкой point и углом наклона angle (в радианах) по отношению к оси X.
@@ -241,28 +244,29 @@ fun circleByThreePoints(a: Point, b: Point, c: Point): Circle {
 fun minContainingCircle(vararg points: Point): Circle {
     if (points.isEmpty()) throw IllegalArgumentException()
     if (points.size == 1) return Circle(points[0], 0.0)
-    if (points.size == 2) return Circle(
-        Point((points[1].x + points[0].x) / 2, (points[1].y + points[0].y) / 2),
-        points[1].distance(points[0]) / 2
-    )
-    val max1 = diameter(*points).begin
-    val max2 = diameter(*points).end
-    var cir = Circle(Point((max1.x + max2.x) / 2, (max1.y + max2.y) / 2), max1.distance(max2) / 2.0)
+    if (points.size == 2) return circleByDiameter(Segment(points[0], points[1]))
+    var cir = circleByDiameter(diameter(*points))
     var n = true
     for (s in points) {
         if (!cir.contains(s)) n = false
     }
-    if (n) cir
+    if (n) return cir
     var min = Circle(Point(0.0, 0.0), Double.MAX_VALUE)
     for (i in points.indices) {
         for (j in points.indices) {
             for (k in points.indices) {
                 cir = circleByThreePoints(points[i], points[j], points[k])
+                //Второй тест тоже начинает проваливаться с маленькими погрешностями, если добавить
+                // cir.radius += 0.0000000000001
+                //Думаю, из этого можно прийти к выводу,что точки, которые должны были лежать на самой окружности,
+                // перестают на ней лежать, т.к. радиус окружности округлен в меньшую сторону => проблема в подсчете double
                 var n = true
                 for (s in points) {
                     if (!cir.contains(s)) n = false
                 }
-                if (n && (cir.radius < min.radius)) min = cir
+                if (n) {
+                    if (n && (cir.radius < min.radius)) min = cir
+                }
             }
         }
     }
