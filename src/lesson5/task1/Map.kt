@@ -338,8 +338,8 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
             when (ls[a] + ls[b]) {
                 number -> return min(list.indexOf(ls[a]), list.indexOf(ls[b])) to
                         list.indexOf(ls[a]).coerceAtLeast(list.indexOf(ls[b]))
-                in number..Int.MAX_VALUE -> a++
-                else -> b--
+                in number..Int.MAX_VALUE -> b--
+                else -> a++
             }
         }
     }

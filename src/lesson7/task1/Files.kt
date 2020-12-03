@@ -204,7 +204,7 @@ fun alignFileByWidth(inputName: String, outputName: String) {
                     }
                 }
             }
-        } else builder.append("\n")
+        }
         writer.write(builder.toString().trim() + "\n")
     }
     writer.close()
