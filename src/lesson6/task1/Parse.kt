@@ -157,7 +157,7 @@ fun bestLongJump(jumps: String): Int {
         val temp2 = list2 intersect s.toList()
         if (temp1.isNotEmpty() && temp2.isNotEmpty() || s == "") return -1
     }
-    var k = -1;
+    var k = -1
     for (s in a) {
         val h = s.toIntOrNull() ?: continue
         if (h > k) k = h
@@ -215,19 +215,11 @@ fun mostExpensive(description: String): String {
     val list = description.split("; ")
     val mp = mutableMapOf<String, Double>()
     for (par in list) {
-        var a = par.split(" ")
+        val a = par.split(" ")
         if (a.size != 2) return ""
         mp[a[0]] = a[1].toDouble()
     }
-    var res = ""
-    var res1 = -1.0
-    for ((key, value) in mp) {
-        if (value > res1) {
-            res = key
-            res1 = value
-        }
-    }
-    return res
+    return mp.maxByOrNull { it.value }!!.key
 }
 
 /**

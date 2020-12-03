@@ -66,13 +66,9 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
 fun deleteMarked(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
     for (line in File(inputName).readLines()) {
-        if (line.isEmpty()) {
+        if (!line.startsWith("_")) {
+            writer.write(line)
             writer.newLine()
-        } else {
-            if (!line.startsWith("_")) {
-                writer.write(line)
-                writer.newLine()
-            }
         }
     }
     writer.close()
@@ -172,42 +168,43 @@ fun centerFile(inputName: String, outputName: String) {
 fun alignFileByWidth(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
     var maxlength = 0
+    val lines = mutableMapOf<List<String>, Pair<Int, Int>>()
+    var temp = 0
     for (line in File(inputName).readLines()) {
-        var i = -1
-        for (word in line.split(" ")) {
-            if (word.isNotEmpty()) i += 1 + word.length
-        }
-        if (i > maxlength) maxlength = i
-    }
-    for (line in File(inputName).readLines()) {
-        val builder = StringBuilder()
         var length = -1
         var spaces = -1
-        val words = line.split(" ")
-        for (word in words) {
+        for (word in line.split(" ")) {
             if (word.isNotEmpty()) {
-                spaces++
                 length += 1 + word.length
+                spaces++
             }
         }
+        if (length < 0) {
+            lines[listOf("$temp")] = length to spaces
+            temp++
+        } else lines[line.split(" ")] = length to spaces
+        if (length > maxlength) maxlength = length
+    }
+    for ((words, temppair) in lines) {
+        val builder = StringBuilder()
+        val length = temppair.first
+        val spaces = temppair.second
         if (length > 0) {
-            if (spaces == 0) builder.append(line.trim()) else {
-                var rem = maxlength - length
-                var actualword = 0
-                var kol = 0
-                while (actualword < words.size) {
-                    if (words[actualword].isNotEmpty()) {
-                        builder.append(words[actualword])
-                        if (kol < rem - rem / spaces * spaces){
+            if (spaces == 0) builder.append(words.maxByOrNull { it.length } + "\n") else {
+                val rem = maxlength - length
+                var quantity = 0
+                for (currentword in words) {
+                    if (currentword.isNotEmpty()) {
+                        builder.append(currentword)
+                        if (quantity < rem - rem / spaces * spaces) {
                             builder.append(" ")
-                            kol++
+                            quantity++
                         }
-                        repeat(rem / spaces + 1) { builder.append(" ") }
+                        builder.append(" ".repeat(rem / spaces + 1))
                     }
-                    actualword++
                 }
             }
-        }
+        } else builder.append("\n")
         writer.write(builder.toString().trim() + "\n")
     }
     writer.close()
@@ -328,11 +325,10 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
         if (line.length > s) {
             s = line.length
             res = line
-        } else {
-            if (line.length == s) {
-                res += ", $line"
-            }
+        } else if (line.length == s) {
+            res += ", $line"
         }
+
     }
     writer.write(res)
     writer.close()
@@ -564,8 +560,9 @@ fun divabc(a: Int, b: Int): Pair<Int, String> {
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     val writer = File(outputName).bufferedWriter()
     val builder = StringBuilder()
-    var mindividend = divabc(lhv, rhv).first
-    var remains = divabc(lhv, rhv).second
+    val a = divabc(lhv, rhv)
+    var mindividend = a.first
+    var remains = a.second
     var multiple = mindividend - mindividend % rhv
     var spaces = 1
     var temp = 0
@@ -574,40 +571,35 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         spaces--
         temp--
     }
-    builder.append("$lhv | $rhv\n")
-    repeat(mindividend.toString().length - multiple.toString().length + temp) { builder.append(" ") }
-    builder.append("-${multiple}")
-    repeat(lhv.toString().length - mindividend.toString().length + 3) { builder.append(" ") }
-    builder.append("${lhv / rhv}\n")
-    repeat(max(multiple.toString().length + 1, mindividend.toString().length)) { builder.append("-") }
-    builder.append("\n")
+    builder.append(
+        "$lhv | $rhv\n" + " ".repeat(mindividend.toString().length - multiple.toString().length + temp) +
+                "-${multiple}" + " ".repeat(lhv.toString().length - mindividend.toString().length + 3) +
+                "${lhv / rhv}\n" + "-".repeat(max(multiple.toString().length + 1, mindividend.toString().length))
+                + "\n"
+    )
     while (remains != "") {
         spaces += mindividend.toString().length - (mindividend - multiple).toString().length
         mindividend -= multiple
         while ((mindividend < rhv) && (remains != "")) {
-            repeat(spaces) { builder.append(" ") }
-            builder.append(mindividend, remains[0])
+            builder.append(" ".repeat(spaces) + mindividend, remains[0])
             spaces += if (mindividend == 0) 1 else 0
             mindividend = mindividend * 10 + remains[0].toString().toInt()
             remains = remains.drop(1)
             multiple = mindividend - mindividend % rhv
-            builder.append("\n")
-            repeat(spaces + mindividend.toString().length - multiple.toString().length - 1) { builder.append(" ") }
-            builder.append("-$multiple\n")
-            repeat(
-                spaces + mindividend.toString().length - max(
-                    multiple.toString().length + 1,
-                    mindividend.toString().length
+            builder.append("\n" + " ".repeat(spaces + mindividend.toString().length - multiple.toString().length - 1))
+            builder.append(
+                "-$multiple\n" + " ".repeat(
+                    spaces + mindividend.toString().length - max(
+                        multiple.toString().length + 1,
+                        mindividend.toString().length
+                    )
                 )
+                        + "-".repeat(max(multiple.toString().length + 1, mindividend.toString().length)) + "\n"
             )
-            { builder.append(" ") }
-            repeat(max(multiple.toString().length + 1, mindividend.toString().length)) { builder.append("-") }
-            builder.append("\n")
         }
     }
     spaces += mindividend.toString().length - (mindividend - multiple).toString().length
-    repeat(spaces) { builder.append(" ") }
-    builder.append(mindividend - multiple)
+    builder.append(" ".repeat(spaces) + (mindividend - multiple))
     writer.write(builder.toString())
     writer.close()
 }

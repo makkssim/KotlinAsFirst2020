@@ -246,6 +246,7 @@ fun minContainingCircle(vararg points: Point): Circle {
     if (points.size == 1) return Circle(points[0], 0.0)
     if (points.size == 2) return circleByDiameter(Segment(points[0], points[1]))
     var cir = circleByDiameter(diameter(*points))
+    //cir.radius += 0.0000000000001
     var n = true
     for (s in points) {
         if (!cir.contains(s)) n = false
@@ -257,16 +258,14 @@ fun minContainingCircle(vararg points: Point): Circle {
             for (k in points.indices) {
                 cir = circleByThreePoints(points[i], points[j], points[k])
                 //Второй тест тоже начинает проваливаться с маленькими погрешностями, если добавить
-                // cir.radius += 0.0000000000001
+                //cir.radius += 0.0000000000001
                 //Думаю, из этого можно прийти к выводу,что точки, которые должны были лежать на самой окружности,
                 // перестают на ней лежать, т.к. радиус окружности округлен в меньшую сторону => проблема в подсчете double
-                var n = true
+                var p = true
                 for (s in points) {
-                    if (!cir.contains(s)) n = false
+                    if (!cir.contains(s)) p = false
                 }
-                if (n) {
-                    if (n && (cir.radius < min.radius)) min = cir
-                }
+                if (p && (cir.radius < min.radius)) min = cir
             }
         }
     }

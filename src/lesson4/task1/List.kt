@@ -299,39 +299,38 @@ fun roman(n: Int): String = TODO()
 fun russian(n: Int): String {
     val builder = StringBuilder()
     if (n == 0) return "ноль"
-    val words = mapOf<Int, String>(
+    val words = mapOf(
         0 to "", 1 to "один", 2 to "два", 3 to "три", 4 to "четыре", 5 to "пять",
         6 to "шесть", 7 to "семь", 8 to "восемь", 9 to "девять", 10 to "десять", 11 to "одиннадцать",
         12 to "двенадцать", 13 to "тринадцать", 14 to "четырнадцать", 15 to "пятнадцать", 16 to "шестнадцать",
         17 to "семнадцать", 18 to "восемнадцать", 19 to "девятнадцать"
     )
-    val words2 = mapOf<Int, String>(
+    val words2 = mapOf(
         2 to "двадцать", 3 to "тридцать", 4 to "сорок", 5 to "пятьдесят",
         6 to "шестьдесят", 7 to "семьдесят", 8 to "восемьдесят", 9 to "девяносто"
     )
-    val words3 = mapOf<Int, String>(
+    val words3 = mapOf(
         0 to "", 1 to "сто", 2 to "двести", 3 to "триста", 4 to "четыреста", 5 to "пятьсот",
         6 to "шестьсот", 7 to "семьсот", 8 to "восемьсот", 9 to "девятьсот"
     )
+
+    fun rus3(num: Int): String {
+        val builderfun = StringBuilder()
+        builderfun.append(words3[num / 100] + " ")
+        if (num % 100 < 20) builderfun.append(words[num % 100])
+        else builderfun.append(words2[(num % 100) / 10] + " " + words[num % 10])
+        return builderfun.toString()
+    }
     if (n > 999) {
-        builder.append(words3[n / 100000] + " ")
-        if ((n % 100000) / 1000 < 20) builder.append(words[(n % 100000) / 1000])
-        else builder.append(words2[(n % 100000) / 10000] + " " + words[(n % 10000) / 1000])
-        var temp = 0
-        temp = if ((n / 1000) % 100 > 19) (n / 1000) % 10 else (n / 1000) % 100
-        when (temp) {
+        builder.append(rus3(n / 1000))
+        when (if ((n / 1000) % 100 > 19) (n / 1000) % 10 else (n / 1000) % 100) {
             0, in 5..19 -> builder.append(" тысяч ")
             1 -> builder.append(" тысяча ")
             2, 3, 4 -> builder.append(" тысячи ")
         }
-        val f = n % 1000
-        builder.append(words3[f / 100] + " ")
-        if (f % 100 < 20) builder.append(words[f % 100])
-        else builder.append(words2[(f % 100) / 10] + " " + words[f % 10])
+        builder.append(rus3(n % 1000))
     } else {
-        builder.append(words3[n / 100] + " ")
-        if (n % 100 < 20) builder.append(words[n % 100])
-        else builder.append(words2[(n % 100) / 10] + " " + words[n % 10])
+        builder.append(rus3(n))
     }
     return builder.toString().replace("  ", " ").replace("два тысячи", "две тысячи")
         .replace("один тысяча", "одна тысяча").trim()
