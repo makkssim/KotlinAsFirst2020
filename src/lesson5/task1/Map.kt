@@ -3,6 +3,7 @@
 package lesson5.task1
 
 import lesson4.task1.convertToString
+import java.lang.IllegalArgumentException
 import java.lang.Integer.min
 import java.lang.Math.max
 
@@ -334,10 +335,10 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
         var a = 0
         var b = ls.size - 1
         while (a != b) {
-            when (ls[a] + ls[b]){
+            when (ls[a] + ls[b]) {
                 number -> return min(list.indexOf(ls[a]), list.indexOf(ls[b])) to
                         list.indexOf(ls[a]).coerceAtLeast(list.indexOf(ls[b]))
-                in Int.MAX_VALUE..number -> a++
+                in number..Int.MAX_VALUE -> a++
                 else -> b--
             }
         }
@@ -367,3 +368,4 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
  *   ) -> emptySet()
  */
 fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> = TODO()
+

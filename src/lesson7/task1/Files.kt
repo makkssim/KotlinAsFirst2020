@@ -551,7 +551,7 @@ fun divabc(a: Int, b: Int): Pair<Int, String> {
     var num = a.toString()
     var res = 0
     while (res < b) {
-        res = res * 10 + num[0].toString().toInt()
+        res = res * 10 + (num[0] - '0')
         num = num.drop(1)
     }
     return res to num
