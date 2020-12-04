@@ -4,10 +4,7 @@ package lesson8.task1
 
 import lesson1.task1.sqr
 import java.lang.IllegalArgumentException
-import kotlin.math.PI
-import kotlin.math.cos
-import kotlin.math.sin
-import kotlin.math.sqrt
+import kotlin.math.*
 
 // Урок 8: простые классы
 // Максимальное количество баллов = 40 (без очень трудных задач = 11)
@@ -91,7 +88,8 @@ data class Circle(val center: Point, var radius: Double) {
      *
      * Вернуть true, если и только если окружность содержит данную точку НА себе или ВНУТРИ себя
      */
-    fun contains(p: Point): Boolean = (p.distance(center) <= radius)
+    fun contains(p: Point): Boolean =
+        (radius > p.distance(center) || (p.distance(center) in (radius - 0.000001)..(radius + 0.000001)))
 }
 
 /**
@@ -246,7 +244,6 @@ fun minContainingCircle(vararg points: Point): Circle {
     if (points.size == 1) return Circle(points[0], 0.0)
     if (points.size == 2) return circleByDiameter(Segment(points[0], points[1]))
     var cir = circleByDiameter(diameter(*points))
-    //cir.radius += 0.0000000000001
     var n = true
     for (s in points) {
         if (!cir.contains(s)) n = false
@@ -257,10 +254,6 @@ fun minContainingCircle(vararg points: Point): Circle {
         for (j in points.indices) {
             for (k in points.indices) {
                 cir = circleByThreePoints(points[i], points[j], points[k])
-                //Второй тест тоже начинает проваливаться с маленькими погрешностями, если добавить
-                //cir.radius += 0.0000000000001
-                //Думаю, из этого можно прийти к выводу,что точки, которые должны были лежать на самой окружности,
-                // перестают на ней лежать, т.к. радиус окружности округлен в меньшую сторону => проблема в подсчете double
                 var p = true
                 for (s in points) {
                     if (!cir.contains(s)) p = false
