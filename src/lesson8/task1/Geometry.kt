@@ -89,7 +89,7 @@ data class Circle(val center: Point, var radius: Double) {
      * Вернуть true, если и только если окружность содержит данную точку НА себе или ВНУТРИ себя
      */
     fun contains(p: Point): Boolean =
-        (radius > p.distance(center) || (p.distance(center) in (radius - 0.000001)..(radius + 0.000001)))
+        (radius > p.distance(center) - 1e-6)
 }
 
 /**
@@ -101,6 +101,8 @@ data class Segment(val begin: Point, val end: Point) {
 
     override fun hashCode() =
         begin.hashCode() + end.hashCode()
+
+    fun middle(): Point = Point((begin.x + end.x) / 2, (begin.y + end.y) / 2)
 }
 
 /**
@@ -133,7 +135,7 @@ fun diameter(vararg points: Point): Segment {
  * Центр её должен находиться посередине между точками, а радиус составлять половину расстояния между ними
  */
 fun circleByDiameter(diameter: Segment): Circle = Circle(
-    Point((diameter.begin.x + diameter.end.x) / 2, (diameter.begin.y + diameter.end.y) / 2),
+    diameter.middle(),
     diameter.begin.distance(diameter.end) / 2.0
 )
 
