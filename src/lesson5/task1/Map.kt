@@ -2,6 +2,7 @@
 
 package lesson5.task1
 
+import lesson12.task1.PhoneBook
 import lesson4.task1.convertToString
 import java.lang.IllegalArgumentException
 import java.lang.Integer.min
@@ -331,9 +332,9 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  */
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
     val mp = mutableMapOf<Int, Int>()
-    for (i in list.indices) {
-        if (mp.getOrDefault(number - list[i], -1) > -1) {
-            return min(i, mp[number - list[i]]!!) to i.coerceAtLeast(mp[number - list[i]]!!)
+    for ((i, s) in list.withIndex()) {
+        if (mp.getOrDefault(number - s, -1) > -1) {
+            return min(i, mp[number - s]!!) to i.coerceAtLeast(mp[number - s]!!)
         } else mp[list[i]] = i
     }
     return -1 to -1
@@ -361,4 +362,7 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
  *   ) -> emptySet()
  */
 fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> = TODO()
+
+
+
 
