@@ -30,7 +30,6 @@ class PhoneBook {
     fun addHuman(name: String): Boolean {
         return if (name !in book) {
             book[name] = mutableSetOf()
-            book = book.toSortedMap()
             true
         } else false
 
@@ -64,8 +63,7 @@ class PhoneBook {
         return if (name in book) {
             val s = book[name]
             s!!.add(phone)
-            book[name] = s.toSortedSet()
-            book = book.toSortedMap()
+            book[name] = s
             true
         } else false
     }
@@ -115,6 +113,7 @@ class PhoneBook {
      * Порядок людей / порядок телефонов в книге не должен иметь значения.
      */
     override fun equals(other: Any?): Boolean = other is PhoneBook && this.book == other.book
+    override fun hashCode(): Int = book.hashCode()
 
 
 }
