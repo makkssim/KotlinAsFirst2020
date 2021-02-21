@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Tag
+import java.lang.NumberFormatException
 
 internal class ComplexTest {
 
@@ -16,6 +17,9 @@ internal class ComplexTest {
     @Tag("2")
     fun plus() {
         assertApproxEquals(Complex("4-3i"), Complex("1+1i") + Complex("3-4i"), 1e-10)
+        assertThrows(NumberFormatException::class.java) {
+            var a = Complex("1*1i") + Complex("1*1i")
+        }
     }
 
     @Test
@@ -27,7 +31,7 @@ internal class ComplexTest {
     @Test
     @Tag("2")
     fun minus() {
-        assertApproxEquals(Complex("4-2i"), Complex("1+2i") + Complex("3-4i"), 1e-10)
+        assertApproxEquals(Complex("2+6i"), Complex("3+2i") - Complex("1-4i"), 1e-10)
     }
 
     @Test
@@ -47,5 +51,11 @@ internal class ComplexTest {
     fun equals() {
         assertApproxEquals(Complex(1.0, 2.0), Complex("1+2i"), 1e-12)
         assertApproxEquals(Complex(1.0, 0.0), Complex(1.0), 1e-12)
+    }
+
+    @Test
+    fun toStr() {
+        assertEquals("1.0+2.0i", Complex("1+2i").toString())
+
     }
 }

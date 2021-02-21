@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Tag
+import java.lang.NullPointerException
 
 internal class PhoneBookTest {
 
@@ -37,6 +38,7 @@ internal class PhoneBookTest {
         assertFalse(book.addPhone("Иванов Петр", "+79211234567"))
         assertFalse(book.addPhone("Васильев Дмитрий", "+79211234567"))
         assertTrue(book.addPhone("Васильев Дмитрий", "+79217654321"))
+
     }
 
     @Test
@@ -50,6 +52,7 @@ internal class PhoneBookTest {
         assertTrue(book.addPhone("Васильев Дмитрий", "+79217654321"))
         assertTrue(book.removePhone("Иванов Петр", "+78121234567"))
         assertFalse(book.removePhone("Иванов Петр", "+78121234567"))
+        assertFalse(book.removePhone("Иванов Петр", "+7812123456789"))
         assertTrue(book.removePhone("Васильев Дмитрий", "+79217654321"))
     }
 
@@ -62,6 +65,9 @@ internal class PhoneBookTest {
         assertTrue(book.addPhone("Иванов Петр", "+79211234567"))
         assertTrue(book.addPhone("Иванов Петр", "+78121234567"))
         assertEquals(setOf("+79211234567", "+78121234567"), book.phones("Иванов Петр"))
+        assertThrows(NullPointerException::class.java){
+            val a = book.phones("Иван Петров")
+        }
     }
 
     @Test

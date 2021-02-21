@@ -24,21 +24,24 @@ class Complex(var re: Double, var im: Double) {
     /**
      * Конструктор из строки вида x+yi
      */
-    constructor(str: String) : this(1.0, 1.0) {
-        var re = 0.0
-        var im = 0.0
-        when {
-            str.matches(Regex("""-?\d+\.?\d*""")) -> re = str.toDouble()
-            str.matches(Regex("""-?\d+\.?\d*i""")) -> im = str.dropLastWhile { it == 'i' }.toDouble()
-            str.matches(Regex("""-?\d+\.?\d*[+-]\d*\.?\d*i""")) -> {
-                val s = max(str.lastIndexOf('+'), str.lastIndexOf('-'))
-                re = str.substring(0, s).toDouble()
-                im = str.substring(s, str.lastIndex).toDouble()
+    constructor(str: String) : this(cC(str).re, cC(str).im)
+
+    companion object ConstComplex {
+        fun cC(str: String): Complex {
+            var re = 0.0
+            var im = 0.0
+            when {
+                str.matches(Regex("""-?\d+\.?\d*""")) -> re = str.toDouble()
+                str.matches(Regex("""-?\d+\.?\d*i""")) -> im = str.dropLastWhile { it == 'i' }.toDouble()
+                str.matches(Regex("""-?\d+\.?\d*[+-]\d*\.?\d*i""")) -> {
+                    val s = max(str.lastIndexOf('+'), str.lastIndexOf('-'))
+                    re = str.substring(0, s).toDouble()
+                    im = str.substring(s, str.lastIndex).toDouble()
+                }
+                else -> throw NumberFormatException()
             }
-            else -> throw NumberFormatException()
+            return Complex(re, im)
         }
-        this.re = re
-        this.im = im
     }
 
     /**
