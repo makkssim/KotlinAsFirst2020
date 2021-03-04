@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Tag
-import java.lang.NullPointerException
 
 internal class PhoneBookTest {
 
@@ -65,9 +64,7 @@ internal class PhoneBookTest {
         assertTrue(book.addPhone("Иванов Петр", "+79211234567"))
         assertTrue(book.addPhone("Иванов Петр", "+78121234567"))
         assertEquals(setOf("+79211234567", "+78121234567"), book.phones("Иванов Петр"))
-        assertThrows(NullPointerException::class.java){
-            val a = book.phones("Иван Петров")
-        }
+        assertEquals(emptySet<String>(), book.phones("Васильев Дмитрий"))
     }
 
     @Test
@@ -119,4 +116,30 @@ internal class PhoneBookTest {
         assertTrue(book2.addPhone("Иванов Петр", "+79211234567"))
         assertTrue(book.hashCode() == book2.hashCode())
     }
+
+    @Test
+    fun containsMan() {
+        val book = PhoneBook()
+        assertTrue(book.addHuman("Иванов Петр"))
+        assertTrue(book.addHuman("Василь Дмитрий"))
+        assertTrue(book.addHuman("Васильев Дмитрий"))
+        assertTrue(book.addHuman("Иван Петр"))
+        assertTrue(book.containsMan("Иванов Петр"))
+        assertTrue(book.containsMan("Иван Петр"))
+        assertFalse(book.containsMan("Иванов Петров"))
+    }
+
+    @Test
+    fun containsPhone() {
+        val book = PhoneBook()
+        assertTrue(book.addHuman("Иванов Петр"))
+        assertTrue(book.addHuman("Васильев Дмитрий"))
+        assertTrue(book.addPhone("Иванов Петр", "+79211234567"))
+        assertTrue(book.addPhone("Иванов Петр", "+78121234567"))
+        assertTrue(book.addPhone("Васильев Дмитрий", "+79217654321"))
+        assertTrue(book.containsPhone("+79211234567").first)
+        assertTrue(book.containsPhone("+78121234567").first)
+        assertFalse(book.containsPhone("+78409234567").first)
+    }
+
 }

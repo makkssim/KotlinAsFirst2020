@@ -22,6 +22,16 @@ class PhoneBook {
         true
     } else false
 
+    fun containsPhone(phone: String): Pair<Boolean, String> {
+        if (bookSearch(phone)) {
+            for ((name, numbers) in book) {
+                if (phone in numbers) return true to name
+            }
+        }
+        return false to ""
+    }
+
+    fun containsMan(name: String): Boolean = name in book.keys
 
     fun addPhone(name: String, phone: String): Boolean {
         if (bookSearch(phone)) return false
@@ -47,10 +57,7 @@ class PhoneBook {
     }
 
 
-    fun phones(name: String): Set<String> {
-        if (name in book) return book[name]!!.toSet() else throw NullPointerException()
-    }
-
+    fun phones(name: String): Set<String> = if (name in book) book[name]!!.toSet() else emptySet()
 
     fun humanByPhone(phone: String): String? {
         for ((a, b) in book) {
@@ -59,9 +66,6 @@ class PhoneBook {
         return null
     }
 
-
     override fun equals(other: Any?): Boolean = other is PhoneBook && this.book == other.book
     override fun hashCode(): Int = book.hashCode()
-
-
 }
