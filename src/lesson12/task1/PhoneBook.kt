@@ -57,7 +57,7 @@ class PhoneBook {
     }
 
 
-    fun phones(name: String): Set<String> = if (name in book) book[name]!!.toSet() else emptySet()
+    fun phones(name: String): Set<String> = if (name in book) book[name]!!.toSet() else setOf("")
 
     fun humanByPhone(phone: String): String? {
         for ((a, b) in book) {
